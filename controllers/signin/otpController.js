@@ -4,18 +4,18 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 const Member = require("../../models/Member")
 
-exports.sendOTP = async(mobile) => {
+exports.sendOTP = async(req, res) => {
     try{
-
-        if(!mobile.includes("+")){
+    
+        if(!req.body.mobile.includes("+")){
             throw new Error("Please enter number with '+' and country code.")
-        }else if(!validatePhoneNumber.validate(mobile)){
+        }else if(!validatePhoneNumber.validate(req.body.mobile)){
             throw new Error("Please enter a valid number.")
         }
 
-        await client.verify.services(process.env.TWILIO_SMS_SERVICE).verifications.create({to: mobile, channel: 'sms'})
+        await client.verify.services(process.env.TWILIO_SMS_SERVICE).verifications.create({to: req.body.mobile, channel: 'sms'})
 
-        return true
+        res.sendStatus(200)
 
     }catch(error){
         let msg;
@@ -35,28 +35,20 @@ exports.sendOTP = async(mobile) => {
     }
 }   
 
-exports.verifyOTP = async(req,res) => {
+exports.verifyOTP = async(mobile, code) => {
 
     try{
 
-        if(!req.body.mobile.includes("+")){
+        if(!mobile.includes("+")){
             throw new Error("Please enter number with '+' and country code.")
-        }else if(!validatePhoneNumber.validate(req.body.mobile)){
+        }else if(!validatePhoneNumber.validate(mobile)){
             throw new Error("Please enter a valid number.")
         }
-
-        const m = await Member.findOne({mobile: req.body.mobile, membertype: req.params.memberType})
-        if(!m){
-            throw new Error("No user present with given mobile number")
-        }
-        const otp = await client.verify.services(process.env.TWILIO_SMS_SERVICE).verificationChecks.create({to: req.body.mobile, code: req.body.otp})
+        
+        const otp = await client.verify.services(process.env.TWILIO_SMS_SERVICE).verificationChecks.create({to: mobile, code: code})
         if(otp.status==="approved"){
-
-            const token = await m.generateAuthToken() 
-            res.status(201).send({member: m, token})
-                
+            return true
         }else{
-            await Member.findByIdAndDelete(m._id)
             throw new Error("OTP verification failed")
         }
     }catch(error){
@@ -72,7 +64,7 @@ exports.verifyOTP = async(req,res) => {
         }else{
             msg = error.message
         }
-        res.send({error: msg})
+        return {error: msg}
     }
 
 }   

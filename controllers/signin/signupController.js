@@ -1,26 +1,28 @@
 const Member =  require('../../models/Member')
-const {sendOTP} = require('./otpController')
+const {sendOTP, verifyOTP} = require('./otpController')
 
-exports.signup = async(req,res) =>{
+exports.signup = async(req, res) => {
     try{
+
         if(await Member.findOne({mobile: req.body.mobile, membertype: req.body.membertype})){
-            throw new Error(`Mobile number is already associated with ${req.body.membertype} account.`)
+            throw new Error(`Mobile number is already associated with other ${req.body.membertype} account.`)
         }
         if(await Member.findOne({username: req.body.username})){
             throw new Error("Username is already taken, Please choose unique username.")
         }
-        const newMember = new Member(req.body)
-        await newMember.save()
 
-        const otp = await sendOTP(newMember.mobile)
-        if(otp!==true){
-            await Member.findByIdAndDelete(newMember._id)
-            throw new Error(otp)
+        const verified = await verifyOTP(req.body.mobile, req.body.code)
+        if(verified.error){
+            throw new Error(verified.error)
         }
 
-        res.sendStatus(200)
+        const newMember = new Member(req.body)
+        await newMember.save()   
+        const token = await newMember.generateAuthToken() 
+        res.status(201).send({member: newMember, token})
 
     }catch(error){
+
         let em;
         if(error.errors){
             em =  error.errors[Object.keys(error.errors)[0]].properties.message

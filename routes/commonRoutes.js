@@ -2,7 +2,7 @@ const { Router } = require("express");
 const { auth } = require('../middleware/auth');
 const { logout, logoutAll } = require("../controllers/signin/logoutController");
 const { signup } = require("../controllers/signin/signupController");
-const { verifyOTP } = require("../controllers/signin/otpController");
+const { verifyOTP, sendOTP } = require("../controllers/signin/otpController");
 const { login } = require("../controllers/signin/loginController");
 const { sendToEmail, verifyEmailCode } = require("../controllers/password/emailCodeController");
 const { test, getTest } = require("./testController");
@@ -19,8 +19,8 @@ commonRouter.get("/", (req,res)=>{
     res.send('Mzadey Backend')
 })
 
+commonRouter.post("/sendotp", sendOTP)
 commonRouter.post("/signup", signup)
-commonRouter.post("/verifyotp/:memberType", verifyOTP)
 
 commonRouter.post("/login", login)
 
