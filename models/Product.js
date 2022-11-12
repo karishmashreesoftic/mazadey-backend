@@ -50,7 +50,7 @@ const productSchema = new mongoose.Schema({
     bids:[{
         type: mongoose.Schema.Types.ObjectId, ref:'Bid'
     }],
-    status:{ type: String },
+    status:{ type: String, default: "live"},
     createdby:{
         type: mongoose.Schema.Types.ObjectId, ref:'Member' 
     },
