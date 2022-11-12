@@ -1,0 +1,18 @@
+const Member = require("../models/Member")
+
+
+exports.uploadQid = async(req,res) =>{
+    try{
+
+        const url = process.env.BASE_URL+"/file/"+req.file.id.toString()
+        const q = {
+            qid: req.file.id,
+            qurl: url
+        }
+        await Member.findByIdAndUpdate(req.member._id, {qid: q})
+        res.sendStatus(200)
+
+    }catch(error){
+        res.send({error: error.message})
+    }   
+}

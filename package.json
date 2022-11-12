@@ -1,0 +1,28 @@
+{
+  "name": "mzadey",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^4.11.0",
+    "mongoose": "^6.7.0",
+    "mongoose-sequence": "^5.3.1",
+    "multer-gridfs-storage": "^5.0.2",
+    "stripe": "^10.17.0",
+    "twilio": "^3.83.1",
+    "util": "^0.12.5",
+    "validate-phone-number-node-js": "^0.0.1",
+    "validator": "^13.7.0"
+  }
+}
