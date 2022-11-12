@@ -56,6 +56,7 @@ exports.verifyOTP = async(req,res) => {
             res.status(201).send({member: m, token})
                 
         }else{
+            await Member.findByIdAndDelete(m._id)
             throw new Error("OTP verification failed")
         }
     }catch(error){

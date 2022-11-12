@@ -14,6 +14,7 @@ exports.signup = async(req,res) =>{
 
         const otp = await sendOTP(newMember.mobile)
         if(otp!==true){
+            await Member.findByIdAndDelete(newMember._id)
             throw new Error(otp)
         }
 
