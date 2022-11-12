@@ -42,7 +42,7 @@ commonRouter.get("/logout", auth, logout)
 commonRouter.get("/logoutall", logoutAll)
 
 // commonRouter.post("/uploadtest", upload.single("file"), test)
-commonRouter.delete("/deletefile/:id", test)
+// commonRouter.delete("/deletefile/:id", test)
 commonRouter.get("/getfile/:id", getTest)
 
 commonRouter.get("/getprofile", auth, getProfile)
