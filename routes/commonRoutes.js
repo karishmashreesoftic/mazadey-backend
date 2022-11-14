@@ -13,6 +13,7 @@ const { getSingleAd, getSingleAuction } = require("../controllers/product/getSin
 const { getMaxBid } = require("../controllers/bidsController");
 const { getProfile, editProfile } = require("../controllers/memberProfileController");
 const { changePassword } = require("../controllers/password/changePasswordController");
+const { getProducts } = require("../controllers/product/getProductsController");
 const commonRouter = Router()
 
 commonRouter.get("/", (req,res)=>{
@@ -32,6 +33,8 @@ commonRouter.post("/uploadqid", auth, upload.single("qid"), uploadQid)
 commonRouter.get("/getad/:id", auth, getSingleAd)
 commonRouter.get("/getauction/:id", auth, getSingleAuction)
 commonRouter.get("/getmaxbid/:id", auth, getMaxBid)
+
+commonRouter.get("/getitems/filter?", auth, getProducts)
 
 commonRouter.post("/addbalance", auth)
 commonRouter.post("/withdrawbalance", auth)

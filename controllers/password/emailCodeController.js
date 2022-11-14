@@ -1,4 +1,5 @@
-const validator = require("validator")
+const validator = require("validator");
+const Member = require("../../models/Member");
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
@@ -8,6 +9,10 @@ exports.sendToEmail = async(req, res) => {
 
         if (!validator.isEmail(req.body.email)) {
             throw new Error("Enter a valid Email Address");
+        }
+        const member = await Member.findOne({emai: req.body.email})
+        if(!member){
+            throw new Error("No member present with given email id.")
         }
 
         await client.verify.services(process.env.TWILIO_EMAIL_SERVICE).verifications.create({to: req.body.email, channel: 'email'})
@@ -36,8 +41,9 @@ exports.verifyEmailCode = async(req, res) => {
 
         const otp = await client.verify.services(process.env.TWILIO_EMAIL_SERVICE).verificationChecks.create({to: req.body.email, code: req.body.otp})
         if(otp.status==="approved"){
-
-            res.sendStatus(200)
+            const member = await Member.findOne({email: req.body.email})
+            const token = await member.generateAuthToken()
+            res.status(201).send({member, token})
                 
         }else{
             throw new Error("OTP verification failed")

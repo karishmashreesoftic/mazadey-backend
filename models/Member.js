@@ -106,8 +106,8 @@ memberSchema.methods.generateAuthToken = async function() {
     return token
 }
 
-memberSchema.statics.findByCredentials = async (username, password) => {
-    const member = await Member.findOne({ username: username })
+memberSchema.statics.findByCredentials = async (email, password) => {
+    const member = await Member.findOne({ email })
     if (!member) {
         throw new Error(
             "There is no account with given username. Please signup first to login !"
