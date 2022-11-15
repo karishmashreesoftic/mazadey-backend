@@ -11,6 +11,7 @@ exports.sendToEmail = async(req, res) => {
             throw new Error("Enter a valid Email Address");
         }
         const member = await Member.findOne({email: req.body.email})
+        console.log("member..",member)
         if(!member){
             throw new Error("No member present with given email id.")
         }
