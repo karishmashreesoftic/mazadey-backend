@@ -26,12 +26,12 @@ exports.sendOTP = async(req, res) => {
         }else if(error.code===60202){
             msg = "You can check verification code maximun 5 times only, after that you will need to wait until the current verification expires (10 minutes) to create a new verification."
         }else if(error.code===20404){
-            msg = "OTP is already verified successfully."
+            msg = "OTP is verified successfully."
         }else{
             msg = error.message
         }
 
-        return msg
+        res.send({error: msg})
     }
 }   
 
@@ -60,7 +60,7 @@ exports.verifyOTP = async(mobile, code) => {
         }else if(error.code===60202){
             msg = "You can check verification code maximun 5 times only, after that you will need to wait until the current verification expires (10 minutes) to create a new verification."
         }else if(error.code===20404){
-            msg = "OTP is already verified successfully."
+            msg = "OTP is verified successfully."
         }else{
             msg = error.message
         }
