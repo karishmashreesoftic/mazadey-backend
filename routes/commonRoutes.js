@@ -16,6 +16,29 @@ const { changePassword } = require("../controllers/password/changePasswordContro
 const { getProducts } = require("../controllers/product/getProductsController");
 const commonRouter = Router()
 
+
+// const multer = require("multer")
+// const {GridFsStorage} = require('multer-gridfs-storage');
+
+// const storage = new GridFsStorage({
+//     url: process.env.DB_URI,
+//     file: (req, file) => {
+//       console.log("multer..",file)
+//       return new Promise((resolve, reject) => {
+//           const filename = file.originalname;
+//           const fileInfo = {
+//             filename: filename,
+//             bucketName: "uploads"
+//           };
+//           resolve(fileInfo);
+//       });
+//     }
+//   });
+
+// // const storage = new GridFsStorage({ url : process.env.DB_URI})
+// const upload = multer({storage});
+
+
 commonRouter.get("/", (req,res)=>{
     res.send('Mzadey Backend')
 })
