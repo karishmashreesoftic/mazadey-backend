@@ -14,6 +14,7 @@ const { getMaxBid } = require("../controllers/bidsController");
 const { getProfile, editProfile } = require("../controllers/memberProfileController");
 const { changePassword } = require("../controllers/password/changePasswordController");
 const { getProducts } = require("../controllers/product/getProductsController");
+const { createPassword } = require("../controllers/password/createNewPasswordController");
 const commonRouter = Router()
 
 
@@ -75,5 +76,6 @@ commonRouter.get("/getprofile", auth, getProfile)
 commonRouter.post("/editprofile", auth, editProfile)
 
 commonRouter.post("/changepassword", auth, changePassword)
+commonRouter.post("/createnewpassword", createPassword)
 
 module.exports = commonRouter;

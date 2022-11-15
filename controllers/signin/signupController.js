@@ -7,6 +7,9 @@ exports.signup = async(req, res) => {
         if(await Member.findOne({mobile: req.body.mobile, membertype: req.body.membertype})){
             throw new Error(`Mobile number is already associated with other ${req.body.membertype} account.`)
         }
+        if(await Member.findOne({email: req.body.email, membertype: req.body.membertype})){
+            throw new Error(`Email address is already associated with other ${req.body.membertype} account.`)
+        }
         if(await Member.findOne({username: req.body.username})){
             throw new Error("Username is already taken, Please choose unique username.")
         }
