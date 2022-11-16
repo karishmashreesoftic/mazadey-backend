@@ -1,5 +1,7 @@
 const multer = require("multer")
 const fs = require('fs-extra');
+const crypto = require("crypto");
+
 // const {GridFsStorage} = require('multer-gridfs-storage');
 
 // const storage = new GridFsStorage({
@@ -32,7 +34,8 @@ var storage = multer.diskStorage({
        cb(null, 'uploads/');    
     }, 
     filename: function (req, file, cb) { 
-       cb(null , req.member._id.toString()+file.originalname);   
+       const id = crypto.randomBytes(16).toString("hex");
+       cb(null , id+file.originalname);   
     }
  });
 

@@ -5,7 +5,7 @@ exports.uploadQid = async(req,res) =>{
         console.log("uploadQid...req.file..",req.file)
         // const url = process.env.BASE_URL+"/file/"+req.file.id.toString()
         const q = {
-            qpath: req.file.path
+            qpath: "/uploads/"+req.file.filename
         }
         await Member.findByIdAndUpdate(req.member._id, {qid: q})
         res.sendStatus(200)
