@@ -12,7 +12,7 @@ exports.createAd = async(req, res) => {
                 for(let i=0; i<req.files.photos.length; i++){
                     let file = req.files.photos[i]
                     const photo = {
-                        ppath: "/uploads/"+req.file.filename
+                        ppath: "/uploads/"+file.filename
                     }
                     photos.push(photo)
                 }
@@ -21,7 +21,7 @@ exports.createAd = async(req, res) => {
                 for(let i=0; i<req.files.documents.length; i++){
                     let file = req.files.documents[i]
                     const document = {
-                        dpath: "/uploads/"+req.file.filename
+                        dpath: "/uploads/"+file.filename
                     }
                     documents.push(document)
                 }
