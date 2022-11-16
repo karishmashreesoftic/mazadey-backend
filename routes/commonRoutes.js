@@ -8,7 +8,7 @@ const { sendToEmail, verifyEmailCode } = require("../controllers/password/emailC
 const { test, getTest } = require("./testController");
 const upload = require("../utils/multer");
 // const multer = require("multer")
-const {GridFsStorage} = require('multer-gridfs-storage');
+// const {GridFsStorage} = require('multer-gridfs-storage');
 const { uploadQid } = require("../controllers/qidController");
 const { getFile } = require("../controllers/fileController");
 const { getSingleAd, getSingleAuction } = require("../controllers/product/getSingleProductConttroller");
@@ -18,7 +18,7 @@ const { changePassword } = require("../controllers/password/changePasswordContro
 const { getProducts } = require("../controllers/product/getProductsController");
 const { createPassword } = require("../controllers/password/createNewPasswordController");
 // const storage = new GridFsStorage({ url : process.env.DB_URI})
-// const upload = multer({storage});
+// const upload = multer({storage : storage});
 
 const commonRouter = Router()
 
@@ -53,7 +53,7 @@ commonRouter.get("/logoutall", logoutAll)
 
 // commonRouter.post("/uploadtest", upload.single("file"), test)
 // commonRouter.delete("/deletefile/:id", test)
-commonRouter.get("/getfile/:id", getTest)
+commonRouter.get("/getfile", getTest)
 
 commonRouter.get("/getprofile", auth, getProfile)
 commonRouter.post("/editprofile", auth, editProfile)

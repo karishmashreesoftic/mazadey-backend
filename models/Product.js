@@ -32,12 +32,10 @@ const productSchema = new mongoose.Schema({
         }
     },
     photos: [{
-        pid: {type: String},
-        purl: {type: String}
+        ppath: {type: String}
     }],
     documents: [{
-        did: {type: String},
-        durl: {type: String}
+        dpath: {type: String}
     }],
     minbid:{ 
         type: Number, 

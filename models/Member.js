@@ -26,8 +26,7 @@ const memberSchema = new mongoose.Schema({
         required: true,
     },
     qid:{
-        qid: {type: mongoose.Schema.Types.ObjectId, ref:'uploads.files'},
-        qurl: {type: String} 
+        qpath: {type: String}
     },
     membertype:{ 
         type: String, 

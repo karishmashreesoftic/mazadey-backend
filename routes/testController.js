@@ -1,7 +1,7 @@
 const { ObjectId } = require("mongodb")
 const { FactorInstance } = require("twilio/lib/rest/verify/v2/service/entity/factor")
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
-
+const fs = require('fs');
 // exports.test = async(req,res) =>{
 //     try{
 //         const session = await stripe.checkout.sessions.create({
@@ -20,21 +20,11 @@ const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
 
 exports.getTest = async(req, res) => {
     try{
-        console.log("req.params.filename...",req.params.filename)
-        const file = gfs
-            .find({
-                _id: ObjectId("636369c2680bbcf9650755fe")
-            })
-            .toArray((err, files) => {
-                console.log("FILES...",files)
-                if (!files || files.length === 0) {
-                    return res.status(404).json({
-                    err: "no files exist"
-                    });
-                }
-            gfs.openDownloadStreamByName(files[0].filename).pipe(res);
-        });
+        const data = fs.readFileSync("uploads/6371c66371e5725036f77abfavatar.png",
+              {encoding:'utf8', flag:'r'});
  
+    res.send(data);
+        
     }catch(error){
         res.send({error: error.message})
     }

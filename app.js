@@ -1,7 +1,7 @@
 const dotenv = require("dotenv")
 dotenv.config()
 const express = require('express');
-// const path = require("path")
+const path = require("path")
 // const cors = require("cors")
 const bodyParser = require('body-parser');
 const commonRouter = require("./routes/commonRoutes");
@@ -23,11 +23,13 @@ const server = require('http').createServer(app)
 connectToMongo();
 
 // app.use(express.json());
-// app.use('/photos', express.static(path.join(__dirname, '/photos')))
-// app.use(express.static(path.join(__dirname + '/public')))
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+// app.use(express.static(path.join(__dirname + '/uploads')))
+// console.log("path.join(__dirname + '/uploads')...",path.join(__dirname + '/uploads'))
+// app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 // app.use(cors());
+// app.use(express.static(__dirname + '/uploads'));
 
 
 // app.use(adminRouter);

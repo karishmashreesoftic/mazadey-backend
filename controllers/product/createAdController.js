@@ -11,10 +11,8 @@ exports.createAd = async(req, res) => {
             if(req.files.photos){
                 for(let i=0; i<req.files.photos.length; i++){
                     let file = req.files.photos[i]
-                    const url = process.env.BASE_URL+"/file/"+file.id.toString()
                     const photo = {
-                        pid: file.id,
-                        purl: url
+                        ppath: file.path
                     }
                     photos.push(photo)
                 }
@@ -22,10 +20,8 @@ exports.createAd = async(req, res) => {
             if(req.files.documents){
                 for(let i=0; i<req.files.documents.length; i++){
                     let file = req.files.documents[i]
-                    const url = process.env.BASE_URL+"/file/"+file.id.toString()
                     const document = {
-                        did: file.id,
-                        durl: url
+                        dpath: file.path
                     }
                     documents.push(document)
                 }
