@@ -7,6 +7,8 @@ const { login } = require("../controllers/signin/loginController");
 const { sendToEmail, verifyEmailCode } = require("../controllers/password/emailCodeController");
 const { test, getTest } = require("./testController");
 const upload = require("../utils/multer");
+// const multer = require("multer")
+const {GridFsStorage} = require('multer-gridfs-storage');
 const { uploadQid } = require("../controllers/qidController");
 const { getFile } = require("../controllers/fileController");
 const { getSingleAd, getSingleAuction } = require("../controllers/product/getSingleProductConttroller");
@@ -15,29 +17,10 @@ const { getProfile, editProfile } = require("../controllers/memberProfileControl
 const { changePassword } = require("../controllers/password/changePasswordController");
 const { getProducts } = require("../controllers/product/getProductsController");
 const { createPassword } = require("../controllers/password/createNewPasswordController");
-const commonRouter = Router()
-
-
-// const multer = require("multer")
-// const {GridFsStorage} = require('multer-gridfs-storage');
-
-// const storage = new GridFsStorage({
-//     url: process.env.DB_URI,
-//     file: (req, file) => {
-//       console.log("multer..",file)
-//       return new Promise((resolve, reject) => {
-//           const filename = file.originalname;
-//           const fileInfo = {
-//             filename: filename,
-//             bucketName: "uploads"
-//           };
-//           resolve(fileInfo);
-//       });
-//     }
-//   });
-
-// // const storage = new GridFsStorage({ url : process.env.DB_URI})
+// const storage = new GridFsStorage({ url : process.env.DB_URI})
 // const upload = multer({storage});
+
+const commonRouter = Router()
 
 
 commonRouter.get("/", (req,res)=>{

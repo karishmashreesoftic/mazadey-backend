@@ -1,50 +1,25 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const validator = require("validator")
 const bcrypt = require('bcryptjs');
-const validatePhoneNumber = require('validate-phone-number-node-js');
 
 const memberSchema = new mongoose.Schema({
 
     fullname:{
         type: String,
         required: true,
-        validate(value){
-            if(!value.trim().length){
-                throw new Error("Fullname must be specified")
-            }else if(!/^[A-Za-z]{3,}([\s]+)?[A-Za-z]+$/.test(value)) {
-                throw new Error("Fullname must contain 3 characters alphabatical character")
-            }
-        }
     },
     username:{ 
         type: String,
         required: true,
         unique: true,
-        validate(value){
-            if(!/^[A-Za-z0-9]+$/.test(value)) {
-                throw new Error("Username must contain only numeric and alphabatical character")
-            }
-        }
     },
     mobile:{
         type: String,
         required: true,
-        validate(value){
-            if(!value.includes("+")){
-                throw new Error("Please enter number with '+' and country code.")
-            }else if(!validatePhoneNumber.validate(value)){
-                throw new Error("Enter a valid Mobile Number");  
-            }
-        }
     },
     email:{
         type: String,
-        validate(value){
-            if(!validator.isEmail(value)) {
-                throw new Error("Email Id is not valid")
-            }
-        }
+        required: true
     },
     password: {
         type: String,
