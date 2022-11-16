@@ -8,7 +8,7 @@ exports.uploadQid = async(req,res) =>{
         const id = crypto.randomBytes(16).toString("hex");
 // cb(null , id+file.originalname);  
         const q = {
-            qpath: id+req.file.originalname
+            qpath: req.file.filename
         }
         await Member.findByIdAndUpdate(req.member._id, {qid: q})
         res.sendStatus(200)
