@@ -29,10 +29,10 @@ const crypto = require("crypto");
 // const storage = multer.diskStorage({})
 // const upload = multer({dest:'uploads/'});
 var storage = multer.diskStorage({   
-   //  destination: function(req, file, cb) { 
-   //     fs.mkdirsSync("uploads/")
-   //     cb(null, 'uploads/');    
-   //  }, 
+    destination: function(req, file, cb) { 
+       fs.mkdirsSync("uploads/")
+       cb(null, 'uploads/');    
+    }, 
     filename: function (req, file, cb) { 
        const id = crypto.randomBytes(16).toString("hex");
        cb(null , id+file.originalname);   
