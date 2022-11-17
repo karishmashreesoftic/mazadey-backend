@@ -6,7 +6,6 @@ exports.getListing = async(req, res) => {
         if(req.member.membertype==="seller"){
             
             const l = await Product.find({createdby: req.member._id, type: "ad"}).select('title type photos')
-
             res.status(201).send(l)
 
         }else{
@@ -24,7 +23,6 @@ exports.getAuctions = async(req, res) => {
         if(req.member.membertype==="seller"){
             
             const l = await Product.find({createdby: req.member._id, type: "auction"}).select('title type photos')
-
             res.status(201).send(l)
 
         }else{

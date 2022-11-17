@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { placeBid } = require("../controllers/bidsController");
+const { placeBid, deleteBid } = require("../controllers/bidsController");
 const { addToWishlist, removeFromWishlist, getWishlist } = require("../controllers/wishlistController");
 const { auth } = require("../middleware/auth");
 //const upload = require("../utils/multer");
@@ -11,6 +11,7 @@ customerRouter.get("/removefromwishlist/:id", auth, removeFromWishlist)
 customerRouter.get("/getwishlist", auth, getWishlist)
 
 customerRouter.post("/placebid", auth, placeBid)
+customerRouter.delete("/deletebid/:id", auth, deleteBid)
 
 
 module.exports = customerRouter;

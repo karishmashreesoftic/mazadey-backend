@@ -48,6 +48,35 @@ exports.placeBid = async(req, res) => {
     }   
 }
 
+exports.deleteBid = async(req, res) => {
+    try{
+
+        if(req.member.membertype==="customer"){
+            
+            const bid = await Bid.findByIdAndDelete(req.params.id)
+            if(!bid){
+                throw new Error("Bid not found")
+            }
+
+            const bids = await Bid.find({auction: bid.auction}).sort({"amount": "desc"})
+            let bidlist = []
+            for(let i=0; i< bids.length; i++){
+                bidlist.push(bids[i]._id)
+            }
+
+            await Product.findByIdAndUpdate(req.body.auction, {bids: bidlist}, {new: true})
+
+            res.sendStatus(201)           
+
+        }else{
+            throw new Error("Only customers are allowed to perform this action.")
+        }
+
+    }catch(error){
+        res.send({error: error.message})
+    }   
+}
+
 exports.getBids = async(req, res) => {
     try{
 

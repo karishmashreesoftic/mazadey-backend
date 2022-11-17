@@ -1,15 +1,15 @@
 const Member = require("../models/Member")
-// const crypto = require("crypto");
+const crypto = require("crypto");
 
 exports.uploadQid = async(req,res) =>{
     try{
         console.log("uploadQid...req.file..",req.file)
         // const url = process.env.BASE_URL+"/file/"+req.file.id.toString()
-        // const id = crypto.randomBytes(16).toString("hex");
-        // cb(null , id+file.originalname);  
+        const id = crypto.randomBytes(16).toString("hex");
         const q = {
-            qpath: "/uploads/"+req.file.filename
+            qpath: "/uploads/"+id+req.file.originalname
         }
+        console.log("q...",q)
         await Member.findByIdAndUpdate(req.member._id, {qid: q})
         res.sendStatus(200)
 

@@ -3,7 +3,7 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 const Member = require("../../models/Member")
-console.log(" process.env.TWILIO_AUTH_TOKEN...", process.env.TWILIO_AUTH_TOKEN)
+
 exports.sendOTP = async(req, res) => {
     try{
     
