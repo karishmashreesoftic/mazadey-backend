@@ -66,7 +66,7 @@ exports.deleteBid = async(req, res) => {
 
             await Product.findByIdAndUpdate(req.body.auction, {bids: bidlist}, {new: true})
 
-            res.sendStatus(201)           
+            res.sendStatus(200)           
 
         }else{
             throw new Error("Only customers are allowed to perform this action.")
