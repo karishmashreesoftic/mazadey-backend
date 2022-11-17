@@ -8,6 +8,7 @@ exports.createAd = async(req, res) => {
 
             let photos = []
             let documents = []
+            console.log("...",JSON.stringify(req.files))
             if(req.files.photos){
                 for(let i=0; i<req.files.photos.length; i++){
                     let file = req.files.photos[i]
