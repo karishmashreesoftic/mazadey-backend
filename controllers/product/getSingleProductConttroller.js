@@ -27,7 +27,11 @@ exports.getSingleAuction = async(req,res) =>{
         if(!auction){
             throw new Error("No Auction Present")
         }
-        res.status(201).send(auction)
+
+        res.status(201).send({
+            auction,
+            biddescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
+        })
 
     }catch(error){
         res.send({error: error.message})
