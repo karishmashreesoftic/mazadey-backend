@@ -53,10 +53,7 @@ exports.deleteBid = async(req, res) => {
 
         if(req.member.membertype==="customer"){
             
-            const bid = await Bid.findByIdAndDelete(req.params.id)
-            if(!bid){
-                throw new Error("Bid not found")
-            }
+            await Bid.findByIdAndDelete(req.params.id)
 
             const bids = await Bid.find({auction: bid.auction}).sort({"amount": "desc"})
             let bidlist = []
