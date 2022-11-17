@@ -11,9 +11,8 @@ exports.createAd = async(req, res) => {
             if(req.files.photos){
                 for(let i=0; i<req.files.photos.length; i++){
                     let file = req.files.photos[i]
-                    let id = crypto.randomBytes(16).toString("hex");
                     const photo = {
-                        ppath: process.env.BASE_URL+"/uploads/"+id+file.originalname
+                        ppath: process.env.BASE_URL+"/uploads/"+file.filename
                     }
                     photos.push(photo)
                 }
@@ -21,9 +20,8 @@ exports.createAd = async(req, res) => {
             if(req.files.documents){
                 for(let i=0; i<req.files.documents.length; i++){
                     let file = req.files.documents[i]
-                    let id = crypto.randomBytes(16).toString("hex");
                     const document = {
-                        dpath: process.env.BASE_URL+"/uploads/"+id+file.originalname
+                        dpath: process.env.BASE_URL+"/uploads/"+file.filename
                     }
                     documents.push(document)
                 }
