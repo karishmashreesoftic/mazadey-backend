@@ -10,7 +10,7 @@ exports.signup = async(req, res) => {
             if(!req.body.fullname.trim().length){
                 throw new Error("Fullname must be specified")
             }else if(!/^[A-Za-z]{3,}([\s]+)?[A-Za-z]+$/.test(req.body.fullname)) {
-                throw new Error("Fullname must contain atleast 3 alphabatical character")
+                throw new Error("Invalid fullname. Only alphabatical characters are allowed.")
             }
         }
         if(req.body.username){
