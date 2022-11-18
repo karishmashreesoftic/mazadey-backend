@@ -11,12 +11,20 @@ exports.auth = async (req, res, next) => {
         let member;
         member = await Member.findOne({_id:decoded._id, 'tokens.token': token})
 
+        if(!member){
+            throw new Error("User not found !")
+        }
+
         req.token = token
         req.member = member
         next()
         
     }catch(e){
-        res.status(401).send({message: "Please authenticate...!!!"})
+        let msg = "Please authenticate...!!!";
+        if(e.message==="User not found !"){
+            msg = e.message
+        }
+        res.status(401).send({message: msg})
     }
 }
 
