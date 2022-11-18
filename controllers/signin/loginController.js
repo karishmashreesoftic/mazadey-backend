@@ -6,6 +6,6 @@ exports.login = async(req,res) =>{
         const token = await member.generateAuthToken()
         res.status(201).send({member, token})
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }

@@ -26,6 +26,6 @@ exports.getTest = async(req, res) => {
     res.send(data);
         
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }
 }

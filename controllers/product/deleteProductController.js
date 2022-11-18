@@ -26,14 +26,14 @@ exports.deleteAd = async(req,res) =>{
     
             await Product.findByIdAndDelete(req.params.id)
 
-            res.sendStatus(200)
+            res.status(200).send({message: "Success"}) 
 
         }else{
             throw new Error("Only sellers are allowed to perform this action")
         }
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }
 
@@ -63,13 +63,13 @@ exports.deleteAuction = async(req,res) =>{
             }
 
             await Product.findByIdAndDelete(req.params.id)
-            res.sendStatus(200)
+            res.status(200).send({message: "Success"}) 
 
         }else{
             throw new Error("Only sellers are allowed to perform this action")
         }
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }

@@ -41,8 +41,8 @@ exports.signup = async(req, res) => {
         }
 
         const verified = await verifyOTP(req.body.mobile, req.body.code)
-        if(verified.error){
-            throw new Error(verified.error)
+        if(verified.message){
+            throw new Error(verified.message)
         }
 
         const newMember = new Member(req.body)
@@ -58,6 +58,6 @@ exports.signup = async(req, res) => {
         }else{
             em =  error.message
         }
-        res.send({error: em})
+        res.send({message: em})
     }   
 }

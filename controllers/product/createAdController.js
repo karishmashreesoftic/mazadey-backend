@@ -1,10 +1,22 @@
 const Product = require("../../models/Product")
+const validatePhoneNumber = require('validate-phone-number-node-js');
 const crypto = require("crypto");
 
 exports.createAd = async(req, res) => {
     try{
 
         if(req.member.membertype==="seller"){
+
+            if(req.body.email){
+                if (!validator.isEmail(req.body.email)) {
+                    throw new Error("Enter a valid Email Address");
+                  }
+            }
+            if(req.body.mobile){
+                if(!validatePhoneNumber.validate(req.body.mobile)){
+                    throw new Error("Enter a valid Mobile Number");  
+                }
+            }
 
             let photos = []
             let documents = []
@@ -46,6 +58,6 @@ exports.createAd = async(req, res) => {
         }
  
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }
 }

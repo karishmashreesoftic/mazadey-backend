@@ -15,7 +15,7 @@ exports.getProfile = async(req,res) => {
         res.status(201).send(user)
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }
 
@@ -26,6 +26,6 @@ exports.editProfile = async(req,res) => {
         res.status(201).send(user)
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }

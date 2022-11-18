@@ -15,7 +15,7 @@ exports.sendOTP = async(req, res) => {
 
         await client.verify.services(process.env.TWILIO_SMS_SERVICE).verifications.create({to: req.body.mobile, channel: 'sms'})
 
-        res.sendStatus(200)
+        res.status(200).send({message: "Success"}) 
 
     }catch(error){
         let msg;
@@ -31,7 +31,7 @@ exports.sendOTP = async(req, res) => {
             msg = error.message
         }
 
-        res.send({error: msg})
+        res.send({message: msg})
     }
 }   
 
@@ -64,7 +64,7 @@ exports.verifyOTP = async(mobile, code) => {
         }else{
             msg = error.message
         }
-        return {error: msg}
+        return {message: msg}
     }
 
 }   

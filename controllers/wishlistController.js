@@ -8,14 +8,14 @@ exports.addToWishlist = async(req,res) => {
 
             const newWishlist = req.member.wishlist.concat(req.params.id)
             await Member.findByIdAndUpdate(req.member._id, {wishlist: newWishlist})
-            res.sendStatus(200)
+            res.status(200).send({message: "Success"}) 
 
         }else{
             throw new Error("Only customers are allowed to perform this action.")
         }
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }
 
@@ -26,14 +26,14 @@ exports.removeFromWishlist = async(req,res) => {
 
             const newWishlist = req.member.wishlist.filter((i)=> {return i.toString() !== req.params.id})
             await Member.findByIdAndUpdate(req.member._id, {wishlist: newWishlist})
-            res.sendStatus(200)
+            res.status(200).send({message: "Success"}) 
 
         }else{
             throw new Error("Only customers are allowed to perform this action.")
         }
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }
 
@@ -50,6 +50,6 @@ exports.getWishlist = async(req, res) => {
         }
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }

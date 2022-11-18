@@ -13,6 +13,6 @@ exports.changePassword = async(req,res) => {
         }
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }
 }

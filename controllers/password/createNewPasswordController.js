@@ -9,10 +9,10 @@ exports.createPassword = async(req,res) => {
             throw new Error("New Password can't be old password.")
         }else{
             await Member.findOneAndUpdate({email: req.body.email}, {password: await bcrypt.hash(req.body.newpassword, 8)})
-            res.sendStatus(200)
+            res.status(200).send({message: "Success"}) 
         }
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }
 }

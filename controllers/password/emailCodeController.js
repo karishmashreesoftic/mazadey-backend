@@ -17,7 +17,7 @@ exports.sendToEmail = async(req, res) => {
         }
 
         await client.verify.services(process.env.TWILIO_EMAIL_SERVICE).verifications.create({to: req.body.email, channel: 'email'})
-        res.sendStatus(200)
+        res.status(200).send({message: "Success"}) 
 
     }catch(error){
         let msg;
@@ -33,7 +33,7 @@ exports.sendToEmail = async(req, res) => {
             msg = error.message
         }
 
-        res.send({error: error.message})
+        res.send({message: error.message})
     }
 }
 
@@ -65,6 +65,6 @@ exports.verifyEmailCode = async(req, res) => {
             msg = error.message
         }
 
-        res.send({error: msg})
+        res.send({message: msg})
     }
 }

@@ -9,9 +9,9 @@ exports.uploadQid = async(req,res) =>{
         }
         console.log("q...",q)
         await Member.findByIdAndUpdate(req.member._id, {qid: q})
-        res.sendStatus(200)
+        res.status(200).send({message: "Success"}) 
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }

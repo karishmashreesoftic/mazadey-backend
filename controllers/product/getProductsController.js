@@ -10,6 +10,6 @@ exports.getProducts = async(req,res) =>{
         res.status(201).send(products)
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }

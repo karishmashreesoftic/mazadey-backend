@@ -44,7 +44,7 @@ exports.placeBid = async(req, res) => {
         }
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }
 
@@ -63,14 +63,14 @@ exports.deleteBid = async(req, res) => {
 
             await Product.findByIdAndUpdate(req.body.auction, {bids: bidlist}, {new: true})
 
-            res.sendStatus(200)           
+            res.status(200).send({message: "Success"})           
 
         }else{
             throw new Error("Only customers are allowed to perform this action.")
         }
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }
 
@@ -87,7 +87,7 @@ exports.getBids = async(req, res) => {
         }
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }
 
@@ -102,6 +102,6 @@ exports.getMaxBid = async(req, res) => {
         res.status(201).send(auction.bids[0])
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }
 }

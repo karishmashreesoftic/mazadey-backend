@@ -6,9 +6,9 @@ exports.logout = async(req,res) =>{
             return token.token !== req.token
         })
         await Member.findOneAndUpdate({_id: req.member._id},{tokens: updated_tokens}) 
-        res.sendStatus(200)
+        res.status(200).send({message: "Success"}) 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }
 
@@ -17,6 +17,6 @@ exports.logoutAll = async(req,res) =>{
         await Member.findOneAndUpdate({_id: req.member._id},{tokens: []}) 
         res.status(200).send()
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }

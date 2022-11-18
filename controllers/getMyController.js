@@ -13,7 +13,7 @@ exports.getListing = async(req, res) => {
         }
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }
 
@@ -30,6 +30,6 @@ exports.getAuctions = async(req, res) => {
         }
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }

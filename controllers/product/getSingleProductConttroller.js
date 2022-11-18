@@ -11,7 +11,7 @@ exports.getSingleAd = async(req,res) =>{
         res.status(201).send(ad)
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }
 
@@ -34,7 +34,7 @@ exports.getSingleAuction = async(req,res) =>{
         })
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }
 
@@ -52,6 +52,6 @@ exports.getMyAuction = async(req,res) =>{
         }
 
     }catch(error){
-        res.send({error: error.message})
+        res.send({message: error.message})
     }   
 }
