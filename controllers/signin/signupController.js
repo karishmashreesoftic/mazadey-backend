@@ -48,7 +48,7 @@ exports.signup = async(req, res) => {
         const newMember = new Member(req.body)
         await newMember.save()   
         const token = await newMember.generateAuthToken() 
-        res.status(201).send({member: newMember, token})
+        res.status(201).send({member: newMember, token, message: "Signup Successful"})
 
     }catch(error){
 
