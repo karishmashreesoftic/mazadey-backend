@@ -1,6 +1,7 @@
 const Product = require("../../models/Product")
 const validatePhoneNumber = require('validate-phone-number-node-js');
 const crypto = require("crypto");
+const validator = require("validator")
 
 exports.createAd = async(req, res) => {
     try{
