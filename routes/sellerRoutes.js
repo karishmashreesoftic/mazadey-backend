@@ -4,6 +4,7 @@ const { getListing, getAuctions } = require("../controllers/getMyController");
 const { createAd } = require("../controllers/product/createAdController");
 const { deleteAd, deleteAuction } = require("../controllers/product/deleteProductController");
 const { getMyAuction } = require("../controllers/product/getSingleProductConttroller");
+const { sell } = require("../controllers/sellController");
 const { auth } = require("../middleware/auth");
 const upload = require("../utils/multer");
 const sellerRouter = Router()
@@ -15,5 +16,6 @@ sellerRouter.get("/getbidslist/:id", auth, getBids)
 sellerRouter.get("/getmyauction/:id", auth, getMyAuction)
 sellerRouter.delete("/deletead/:id", auth, deleteAd)
 sellerRouter.delete("/deleteauction/:id", auth, deleteAuction)
+sellerRouter.get("/sell/:id", auth, sell)
 
 module.exports = sellerRouter;

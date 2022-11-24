@@ -46,7 +46,8 @@ exports.createAd = async(req, res) => {
                 photos,
                 documents,
                 createdby: req.member._id,
-                createdat: new Date()
+                createdat: new Date(),
+                statusat: new Date()
             }
 
             const newAd = new Product(tempAd)

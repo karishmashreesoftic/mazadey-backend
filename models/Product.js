@@ -49,6 +49,8 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, ref:'Bid'
     }],
     status:{ type: String, default: "live"},
+    statusat: { type: Date},
+    winner: { type: mongoose.Schema.Types.ObjectId, ref:'Member' },
     createdby:{
         type: mongoose.Schema.Types.ObjectId, ref:'Member' 
     },
