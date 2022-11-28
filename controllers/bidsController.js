@@ -113,3 +113,21 @@ exports.getMaxBid = async(req, res) => {
         res.send({message: error.message})
     }
 }
+
+
+exports.getMyBid = async(req, res) => {
+    try{
+
+        if(req.member.membertype==="customer"){
+            
+            const bids = await Bid.find({placedby: req.member._id}).populate('auction', 'title description minbid')
+            res.status(200).send(bids)
+
+        }else{
+            throw new Error("Only customers are allowed to perform this action.")
+        }
+
+    }catch(error){
+        res.send({message: error.message})
+    }   
+}
