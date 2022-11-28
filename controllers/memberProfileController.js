@@ -9,7 +9,8 @@ exports.getProfile = async(req,res) => {
             fullname: req.member.fullname,
             mobile: req.member.mobile,
             email: req.member.email,
-            status: req.member.status
+            status: req.member.status,
+            type: req.member.membertype
         }
 
         res.status(201).send(user)

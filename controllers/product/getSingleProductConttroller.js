@@ -4,7 +4,7 @@ const Product = require("../../models/Product")
 exports.getSingleAd = async(req,res) =>{
     try{
 
-        const ad = await Product.findOne({_id : req.params.id, type:"ad"}).select('photos title description mobile email documents').lean()
+        const ad = await Product.findOne({_id : req.params.id, type:"ad"}).select('photos title description mobile email documents price').lean()
         if(!ad){
             throw new Error("No Ad Present")
         }

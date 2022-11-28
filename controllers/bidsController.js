@@ -11,6 +11,9 @@ exports.placeBid = async(req, res) => {
             if(!auction){
                 throw new Error("Auction not found")
             }
+            if(auction.status==="sold"){
+                throw new Error("Auction is over.")
+            }
             if(req.body.amount < auction.minbid){
                 throw new Error("Bid amount should be more than the minimum bid amount")
             }
@@ -79,7 +82,12 @@ exports.getBids = async(req, res) => {
 
         if(req.member.membertype==="seller"){
    
-            const bids = await Bid.find({auction: req.params.id}).sort({"amount": "desc"}).populate('placedby', 'fullname').select('amount placedby')
+            const bids = await Bid
+                                .find({auction: req.params.id})
+                                .sort({"amount": "desc"})
+                                .populate('placedby', 'fullname')
+                                .select('amount placedby winner')
+
             res.status(201).send(bids)
 
         }else{

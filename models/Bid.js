@@ -14,6 +14,9 @@ const bidSchema = new mongoose.Schema({
     auction:{
         type: mongoose.Schema.Types.ObjectId, ref:'Product' 
     },
+    winner:{
+        type: Boolean
+    },
     createdat:{ type: Date },
 })
 

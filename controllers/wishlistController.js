@@ -28,7 +28,7 @@ exports.removeFromWishlist = async(req,res) => {
 exports.getWishlist = async(req, res) => {
     try{
   
-        const w = await Member.findById(req.member._id).populate('wishlist','title photos type').select('wishlist')
+        const w = await Member.findById(req.member._id).populate('wishlist','title photos type mobile').select('wishlist')
         res.status(201).send(w.wishlist)
 
     }catch(error){
