@@ -120,8 +120,20 @@ exports.getMyBid = async(req, res) => {
 
         if(req.member.membertype==="customer"){
             
-            const bids = await Bid.find({placedby: req.member._id}).populate('auction', 'title description minbid')
-            res.status(200).send(bids)
+            const bids = await Bid.find({placedby: req.member._id}).populate('auction', 'title description minbid').lean()
+
+            let finalBids = []
+            for(let i in bids){
+                var t;
+                if(req.member.wishlist.includes(bids[i]._id)){
+                    t = {...bids[i], "wishlisted": true}
+                }else{
+                    t = {...bids[i], "wishlisted": false}
+                }
+                finalBids.push(t)
+            }
+
+            res.status(200).send(finalBids)
 
         }else{
             throw new Error("Only customers are allowed to perform this action.")

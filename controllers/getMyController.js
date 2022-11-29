@@ -29,7 +29,7 @@ exports.getAuctions = async(req, res) => {
             for(let i in l){
                 var t;
                 if(req.member.wishlist.includes(l[i]._id)){
-                    t = {...length[i], "wishlisted": true}
+                    t = {...l[i], "wishlisted": true}
                 }else{
                     t = {...l[i], "wishlisted": false}
                 }

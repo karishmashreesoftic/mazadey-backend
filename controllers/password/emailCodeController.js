@@ -33,7 +33,7 @@ exports.sendToEmail = async(req, res) => {
             msg = error.message
         }
 
-        res.send({message: error.message})
+        res.send({message: msg})
     }
 }
 
