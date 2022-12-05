@@ -1,62 +1,64 @@
-const mongoose = require('mongoose');
-const dotenv = require("dotenv");
-dotenv.config({path:"config/config.env"});
+
+const { Sequelize, DataTypes } = require("sequelize");
+const sequelize = require('../db');
 const validator = require("validator")
 const validatePhoneNumber = require('validate-phone-number-node-js');
+const Photos = require("./Photos");
+const Documents = require("./Documents");
+const Bid = require("./Bid");
+const Member = require("./Member");
 
-const productSchema = new mongoose.Schema({
+const Product = sequelize.define('MZ_PRODUCTS',{
 
+    _id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV1,
+        primaryKey: true
+    },
     title:{
-        type: String,
-        required: true
+        type: DataTypes.STRING,
+        allowNull: false
     },
     description:{ 
-        type: String,
-        required: true,
+        type: DataTypes.STRING,
+        allowNull: false
     },
     mobile:{
-        type: String,
-        required: true,
-        validate(value){
-            if(!validatePhoneNumber.validate(value)){
-                throw new Error("Enter a valid Mobile Number");  
-            }
-        }
+        type: DataTypes.STRING,
+        allowNull: false
     },
     email:{
-        type: String,
-        validate(value) {
-            if (!validator.isEmail(value)) {
-              throw new Error("Enter a valid Email Address");
-            }
-        }
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    photos: [{
-        ppath: {type: String}
-    }],
-    documents: [{
-        dpath: {type: String}
-    }],
     minbid:{ 
-        type: Number, 
-        default: 0 
+        type: DataTypes.INTEGER, 
+        defaultValue: 0 
+    },
+    price:{ 
+        type: DataTypes.INTEGER, 
+        defaultValue: 0 
     },
     type:{ 
-        type: String, 
-        required: true
+        type: DataTypes.STRING, 
+        allowNull: false
     },
-    bids:[{
-        type: mongoose.Schema.Types.ObjectId, ref:'Bid'
-    }],
-    status:{ type: String, default: "live"},
-    statusat: { type: Date},
-    winner: { type: mongoose.Schema.Types.ObjectId, ref:'Member' },
-    createdby:{
-        type: mongoose.Schema.Types.ObjectId, ref:'Member' 
+    status:{ type: DataTypes.STRING, defaultValue: "live" },
+    statusat: { type: DataTypes.DATE },
+    createdby:{ 
+        type: DataTypes.UUID,
+        references: {
+            model: "MZ_MEMBERS",
+            key: '_id'
+        }
     },
-    createdat:{ type: Date },
+    winner:{ 
+        type: DataTypes.UUID,
+        references: {
+            model: "MZ_MEMBERS",
+            key: '_id'
+        }
+    }
 })
-
-const Product = mongoose.model('Product',productSchema)
 
 module.exports = Product

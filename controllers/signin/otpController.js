@@ -51,6 +51,7 @@ exports.verifyOTP = async(mobile, code) => {
         }else{
             throw new Error("OTP verification failed")
         }
+        
     }catch(error){
         let msg;
         if(error.code===60200){

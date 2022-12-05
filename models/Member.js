@@ -1,100 +1,98 @@
-const mongoose = require('mongoose');
+const { Sequelize, DataTypes } = require("sequelize");
+const sequelize = require('../db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const Token = require("./Token");
+const Qid = require("./Qid");
+const Bid = require("./Bid");
 
-const memberSchema = new mongoose.Schema({
+const Member = sequelize.define('MZ_MEMBERS',{
 
+    _id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV1,
+        primaryKey: true
+    },
     fullname:{
-        type: String,
-        required: true,
+        type: DataTypes.STRING,
+        allowNull: false
     },
     username:{ 
-        type: String,
-        required: true,
-        unique: true,
+        type: DataTypes.STRING,
+        allowNull: false
     },
     mobile:{
-        type: String,
-        required: true,
+        type: DataTypes.STRING,
+        allowNull: false
     },
     email:{
-        type: String,
-        required: true
+        type: DataTypes.STRING,
+        allowNull: false
     },
     password: {
-        type: String,
-        required: true,
-    },
-    qid:{
-        qpath: {type: String}
+        type: DataTypes.STRING,
+        allowNull: false
     },
     membertype:{ 
-        type: String, 
-        required: true 
+        type: DataTypes.STRING, 
+        allowNull: false
     },
     fcmtoken:{ 
-        type: String, 
-        default: null 
+        type: DataTypes.STRING, 
+        defaultValue: null 
     },
     noofproducts:{ 
-        type: Number, 
-        default: 0 
+        type: DataTypes.INTEGER, 
+        defaultValue: 0 
     },
     noofbids:{ 
-        type: Number, 
-        default: 0 
+        type: DataTypes.INTEGER, 
+        defaultValue: 0 
     },
-    wishlist:[{
-        type: mongoose.Schema.Types.ObjectId, ref:'Product'
-    }],
     balance:{
-        type: Number, 
-        default: 0
+        type: DataTypes.INTEGER, 
+        defaultValue: 0
     },
-    tokens: [{
-        token: {
-            type:String,
-            required: true
-        }
-    }],
-    status:{ type: String, default: "pending" },
-    createdat:{ type: Date },
+    status:{ type: DataTypes.STRING, defaultValue: "pending" },
 })
 
-memberSchema.pre('save', async function(next) {
-    const member = this
+Member.beforeCreate(async (member, options) => {
 
-    if(member.isModified('password')){
-        member.password = await bcrypt.hash(member.password,8)
-    }
-    next()
-})
+    // console.log("beforeCreate...",member)
 
-memberSchema.methods.generateAuthToken = async function() {
-    const member = this
-    const token = jwt.sign({_id: member._id.toString()}, process.env.JWT_SECRET)
+    member.password = await bcrypt.hash(member.password, 8);
+    // console.log("after..",member)
 
-    member.tokens = member.tokens.concat({ token });
-    await member.save();
+});
 
-    return token
-}
+// Member.Instance.prototype.generateAuthToken = function () {
+//     console.log(this.title);
+// }
 
-memberSchema.statics.findByCredentials = async (email, password) => {
-    const member = await Member.findOne({ email })
-    if (!member) {
+// memberSchema.methods.generateAuthToken = async function() {
+//     const member = this
+//     const token = jwt.sign({_id: member._id.toString()}, process.env.JWT_SECRET)
+
+//     member.tokens = member.tokens.concat({ token });
+//     await member.save();
+
+//     return token
+// }
+
+Member.findByCredentials = async (email, password) => {
+
+    let m = await Member.findOne({where: {email}})
+    if (!m) {
         throw new Error(
-            "There is no account with given username. Please signup first to login !"
+            "There is no account with given Email. Please signup first to login !"
         );
     }
-    const isMatch = await bcrypt.compare(password, member.password);
+    const isMatch = await bcrypt.compare(password, m.password);
     if (!isMatch) {
         throw new Error("The entered password is incorrect");
     }
-    return member;
+    return m;
 }
 
-
-const Member = mongoose.model('Member',memberSchema)
 
 module.exports = Member
