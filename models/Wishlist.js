@@ -8,18 +8,11 @@ const Wishlist = sequelize.define('MZ_WISHLIST', {
   
     MemberID: {
       type: DataTypes.UUID,
-      references: {
-        model: "MZ_MEMBERS",
-        key: '_id'
-      }
     },
     ProductId: {
       type: DataTypes.UUID,
-      references: {
-        model: "MZ_MEMBERS",
-        key: '_id'
-      }
     }
+    
 });
 
 module.exports = Wishlist

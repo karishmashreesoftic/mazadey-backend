@@ -16,10 +16,6 @@ const Token = sequelize.define('MZ_TOKENS',{
     },
     member:{
         type: DataTypes.UUID,
-        references: {
-            model: "MZ_MEMBERS",
-            key: '_id'
-        }
     },
 
 })

@@ -19,17 +19,9 @@ const Bid = sequelize.define('MZ_BIDS',{
     },
     placedby:{
         type: DataTypes.UUID,
-        references: {
-            model: "MZ_MEMBERS",
-            key: '_id'
-        },
     },
     auction:{
         type: DataTypes.UUID,
-        references: {
-            model: "MZ_PRODUCTS",
-            key: '_id'
-        },
     },
 })
 

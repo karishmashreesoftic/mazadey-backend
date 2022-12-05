@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken');
 exports.signup = async(req, res) => {
     try{
 
-        const {fullname, username, mobile, email, password, membertype} = req.body
+        const {fullname, username, mobile, email, password, membertype, code} = req.body
 
         if(fullname){
             if(!fullname.trim().length){
@@ -78,7 +78,6 @@ exports.signup = async(req, res) => {
         res.status(201).send({member: newMember, token : newToken.token, message: "Signup Successful"})
 
     }catch(error){
-        console.log("error..",error)
 
         let em;
         if(error.errors){

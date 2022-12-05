@@ -15,10 +15,6 @@ const Qid = sequelize.define('MZ_QID',{
     },
     member:{
         type: DataTypes.UUID,
-        references: {
-            model: "MZ_MEMBERS",
-            key: '_id'
-        }
     },
 })
 

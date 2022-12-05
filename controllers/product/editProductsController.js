@@ -1,14 +1,33 @@
 const { unlinkSync } = require("fs-extra");
 const Product = require("../../models/Product")
 const validator = require("validator")
+const dirpath = require("path")
 const validatePhoneNumber = require('validate-phone-number-node-js');
+const Photos = require("../../models/Photos");
+const Documents = require("../../models/Documents");
 
 exports.editAd = async(req, res) => {
     try{
 
-        if(req.member.membertype==="seller"){
+        const oldAd = await Product.findByPk(
+            req.params.id,
+            {
+                include: [
+                    {
+                        model: Photos,
+                        as: "photos",
+                        attributes: ['ppath']
+                    },
+                    {
+                        model: Documents,
+                        as: "documents",
+                        attributes: ['dpath']
+                    }
+                ]
+            }
+        )
 
-            const oldAd = await Product.findById(req.params.id)
+        if(req.member.membertype==="seller"){
 
             if(req.body.email){
                 if (!validator.isEmail(req.body.email)) {
@@ -21,49 +40,71 @@ exports.editAd = async(req, res) => {
                 }
             }
 
-            let photos = []
-            let documents = []
-            console.log("...",JSON.stringify(req.files))
             if(req.files.photos){
+
                 for(let i=0; i<req.files.photos.length; i++){
                     let file = req.files.photos[i]
-                    const photo = {
-                        ppath: process.env.BASE_URL+"/uploads/"+file.filename
-                    }
-                    photos.push(photo)
+                    await Photos.create({
+                        ppath : process.env.BASE_URL+"/uploads/"+file.filename, 
+                        product: oldAd._id
+                    })
                 }
 
                 for(let j in oldAd.photos){
                     let p = oldAd.photos[j]
+                    await Photos.destroy({where: {ppath: p.ppath}})
                     let path = p.ppath.replace(process.env.BASE_URL,"")
-                    unlinkSync(path)
+                    unlinkSync(dirpath.join(__dirname, '../..'+path))
                 }
             }
             if(req.files.documents){
+
                 for(let i=0; i<req.files.documents.length; i++){
                     let file = req.files.documents[i]
-                    const document = {
-                        dpath: process.env.BASE_URL+"/uploads/"+file.filename
-                    }
-                    documents.push(document)
+                    await Documents.create({
+                        dpath : process.env.BASE_URL+"/uploads/"+file.filename, 
+                        product: oldAd._id
+                    })
                 }
 
                 for(let j in oldAd.documents){
                     let d = oldAd.documents[j]
+                    await Documents.destroy({where: {dpath: d.dpath}})
                     let path = d.dpath.replace(process.env.BASE_URL,"")
-                    unlinkSync(path)
+                    unlinkSync(dirpath.join(__dirname, '../..'+path))
                 }
             }
 
-            let tempAd = {
-                ...req.body,
-                photos,
-                documents,
+            const row = await Product.update(
+                req.body, 
+                {
+                    where: {_id : oldAd._id },
+                }
+            )
+
+            if(row[0]===1){
+                const newAd = await Product.findByPk(
+                    req.params.id,
+                    {
+                        include: [
+                            {
+                                model: Photos,
+                                as: "photos",
+                                attributes: ['ppath']
+                            },
+                            {
+                                model: Documents,
+                                as: "documents",
+                                attributes: ['dpath']
+                            }
+                        ]
+                    }
+                )
+
+                res.status(201).send(newAd)
+            }else{
+                throw new Error("No item found")
             }
-
-            const newAd = await Product.findByIdAndUpdate(req.params._id, tempAd)
-
-            res.status(201).send(newAd)
 
         }else{
             throw new Error("Only sellers are allowed to perform this action")

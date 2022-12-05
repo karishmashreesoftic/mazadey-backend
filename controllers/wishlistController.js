@@ -1,11 +1,11 @@
 const Product =  require('../models/Product')
 const Member = require('../models/Member')
+const Wishlist = require('../models/Wishlist')
 
 exports.addToWishlist = async(req,res) => {
     try{
 
-        const newWishlist = req.member.wishlist.concat(req.params.id)
-        await Member.findByIdAndUpdate(req.member._id, {wishlist: newWishlist})
+        await Wishlist.create({MemberID: req.member._id, ProductId: req.params.id})
         res.status(200).send({message: "Success"}) 
 
     }catch(error){
@@ -15,9 +15,7 @@ exports.addToWishlist = async(req,res) => {
 
 exports.removeFromWishlist = async(req,res) => {
     try{
-
-        const newWishlist = req.member.wishlist.filter((i)=> {return i.toString() !== req.params.id})
-        await Member.findByIdAndUpdate(req.member._id, {wishlist: newWishlist})
+        await Wishlist.destroy({MemberID: req.member._id, ProductId: req.params.id})
         res.status(200).send({message: "Success"}) 
 
     }catch(error){
@@ -28,7 +26,7 @@ exports.removeFromWishlist = async(req,res) => {
 exports.getWishlist = async(req, res) => {
     try{
   
-        const w = await Member.findById(req.member._id).populate('wishlist','title photos type mobile').select('wishlist')
+        const w = await Member.findByPk(req.member._id).populate('wishlist','title photos type mobile').select('wishlist')
         res.status(201).send(w.wishlist)
 
     }catch(error){

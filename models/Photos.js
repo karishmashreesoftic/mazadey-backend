@@ -17,10 +17,6 @@ const Photos = sequelize.define('MZ_PHOTOS',{
     },
     product:{
         type: DataTypes.UUID,
-        references: {
-            model: "MZ_PRODUCTS",
-            key: '_id'
-        }
     },
 })
 

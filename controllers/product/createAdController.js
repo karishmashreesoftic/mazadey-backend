@@ -1,7 +1,9 @@
 const Product = require("../../models/Product")
 const validatePhoneNumber = require('validate-phone-number-node-js');
 const crypto = require("crypto");
-const validator = require("validator")
+const validator = require("validator");
+const Photos = require("../../models/Photos");
+const Documents = require("../../models/Documents");
 
 exports.createAd = async(req, res) => {
     try{
@@ -19,41 +21,51 @@ exports.createAd = async(req, res) => {
                 }
             }
 
-            let photos = []
-            let documents = []
-            console.log("...",JSON.stringify(req.files))
+            const newAd = await Product.create(
+                {
+                    ...req.body,
+                    statusat: new Date(),
+                    createdby: req.member._id
+                }
+            )
+
             if(req.files.photos){
                 for(let i=0; i<req.files.photos.length; i++){
                     let file = req.files.photos[i]
-                    const photo = {
-                        ppath: process.env.BASE_URL+"/uploads/"+file.filename
-                    }
-                    photos.push(photo)
+                    await Photos.create({
+                        ppath : process.env.BASE_URL+"/uploads/"+file.filename, 
+                        product: newAd._id
+                    })
                 }
             }
             if(req.files.documents){
                 for(let i=0; i<req.files.documents.length; i++){
                     let file = req.files.documents[i]
-                    const document = {
-                        dpath: process.env.BASE_URL+"/uploads/"+file.filename
-                    }
-                    documents.push(document)
+                    await Documents.create({
+                        dpath : process.env.BASE_URL+"/uploads/"+file.filename, 
+                        product: newAd._id
+                    })
                 }
             }
+            const product = await Product.findByPk(
+                newAd._id,
+                {
+                    include: [
+                        {
+                            model: Photos,
+                            as: "photos",
+                            attributes: ['ppath']
+                        },
+                        {
+                            model: Documents,
+                            as: "documents",
+                            attributes: ['dpath']
+                        }
+                    ]
+                }
+            )
 
-            let tempAd = {
-                ...req.body,
-                photos,
-                documents,
-                createdby: req.member._id,
-                createdat: new Date(),
-                statusat: new Date()
-            }
-
-            const newAd = new Product(tempAd)
-            await newAd.save()
-
-            res.status(201).send(newAd)
+            res.status(201).send(product)
 
         }else{
             throw new Error("Only sellers are allowed to perform this action")

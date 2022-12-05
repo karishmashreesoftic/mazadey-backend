@@ -15,6 +15,10 @@ const Product = sequelize.define('MZ_PRODUCTS',{
         defaultValue: DataTypes.UUIDV1,
         primaryKey: true
     },
+    category:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     title:{
         type: DataTypes.STRING,
         allowNull: false
@@ -47,17 +51,9 @@ const Product = sequelize.define('MZ_PRODUCTS',{
     statusat: { type: DataTypes.DATE },
     createdby:{ 
         type: DataTypes.UUID,
-        references: {
-            model: "MZ_MEMBERS",
-            key: '_id'
-        }
     },
     winner:{ 
         type: DataTypes.UUID,
-        references: {
-            model: "MZ_MEMBERS",
-            key: '_id'
-        }
     }
 })
 

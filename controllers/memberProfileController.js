@@ -23,8 +23,22 @@ exports.getProfile = async(req,res) => {
 exports.editProfile = async(req,res) => {
     try{
 
-        const user = await Member.findByIdAndUpdate(req.member._id, req.body, {new: true}).select("fullname mobile email status")
-        res.status(201).send(user)
+        const row = await Member.update(
+            req.body, 
+            {
+                where: {_id : req.member._id },
+            }
+        )
+        if(row[0]===1){
+            const member = await Member.findByPk(
+                req.member._id,
+                {attributes: ['_id', 'fullname', 'mobile', 'email', 'status']}
+            );
+            res.status(201).send(member)
+        }else{
+            throw new Error("Member not found !")
+        }
+        
 
     }catch(error){
         res.send({message: error.message})

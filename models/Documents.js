@@ -17,10 +17,6 @@ const Documents = sequelize.define('MZ_DOCUMENTS',{
     },
     product:{
         type: DataTypes.UUID,
-        references: {
-            model: "MZ_PRODUCTS",
-            key: '_id'
-        }
     },
 
 })

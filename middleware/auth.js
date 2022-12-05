@@ -1,18 +1,31 @@
 const jwt = require('jsonwebtoken');
-const Member = require("../models/Member")
+const Member = require("../models/Member");
+const Wishlist = require('../models/Wishlist');
 //const Admin = require('../models/Admin');
-
 
 exports.auth = async (req, res, next) => {
     try{
 
         const token = req.header('Authorization').replace('Bearer ', '')
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
         let member;
-        member = await Member.findOne({_id:decoded._id, 'tokens.token': token})
+        member = await Member.findByPk(decoded._id)
+        // member = await Member.findByPk(
+        //     decoded._id,
+        //     {
+        //         include: [
+        //             {
+        //                 model: Wishlist,
+        //                 as: "photos",
+        //                 attributes: ['ppath']
+        //             }
+        //         ]
+        //     }
+        // );
 
         if(!member){
-            throw new Error("User not found !")
+            throw new Error()
         }
 
         req.token = token
@@ -20,11 +33,7 @@ exports.auth = async (req, res, next) => {
         next()
         
     }catch(e){
-        let msg = "Please authenticate...!!!";
-        if(e.message==="User not found !"){
-            msg = e.message
-        }
-        res.status(401).send({message: msg})
+        res.status(401).send({message: "Please authenticate...!!!"})
     }
 }
 

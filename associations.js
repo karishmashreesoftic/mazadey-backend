@@ -8,29 +8,30 @@ const Photos = require("./models/Photos");
 const Wishlist = require("./models/Wishlist");
 
 
-Member.hasMany(Token, {as: "tokens"})
-Token.belongsTo(Member, {foreignKey: "member"})
+Member.hasMany(Token, {foreignKey: "member", as: "tokens"})
+Token.belongsTo(Member)
 
-Member.hasMany(Product, {as: "creator"})
-Product.belongsTo(Member, {foreignKey: "createdby"})
+Member.hasMany(Product, {foreignKey: "createdby", as: "creator"})
+Product.belongsTo(Member)
 
-Qid.belongsTo(Member, {foreignKey: "member"})
+Member.hasOne(Qid, {foreignKey: "member"})
+Qid.belongsTo(Member)
 
-Wishlist.belongsTo(Member, {foreignKey: 'MemberID'})
-Wishlist.belongsTo(Product, {foreignKey: 'ProductId'})
+Wishlist.belongsTo(Member)
+Wishlist.belongsTo(Product)
 Member.belongsToMany(Product, {through: Wishlist, foreignKey: 'MemberID', as: 'wishlist'})
 Product.belongsToMany(Member, {through: Wishlist, foreignKey: 'ProductId', as: 'wishlistees'})
 
-Member.hasMany(Bid, {as: "mybids"})
-Bid.belongsTo(Member, {foreignKey: "placedby"})
-Product.hasMany(Bid, {as: "bids"})
-Bid.belongsTo(Product, {foreignKey: "auction"})
+Member.hasMany(Bid, {foreignKey: "placedby", as: "mybids"})
+Bid.belongsTo(Member)
+Product.hasMany(Bid, {foreignKey: "auction", as: "bids"})
+Bid.belongsTo(Product)
 
-Product.hasMany(Photos, {as: "photos"})
-Photos.belongsTo(Product, {foreignKey: "product"})
-Product.hasMany(Documents, {as: "documents"})
-Documents.belongsTo(Product, {foreignKey: "product"})
+Product.hasMany(Photos, {foreignKey: "product", as: "photos"})
+Photos.belongsTo(Product)
+Product.hasMany(Documents, {foreignKey: "product", as: "documents"})
+Documents.belongsTo(Product)
 
-Product.belongsTo(Member, {foreignKey: "winner"})
-Member.hasMany(Product, {as: "winners"})
+Product.belongsTo(Member)
+Member.hasMany(Product, {foreignKey: "winner", as: "winners"})
 

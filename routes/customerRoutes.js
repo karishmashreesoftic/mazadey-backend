@@ -6,8 +6,8 @@ const { auth } = require("../middleware/auth");
 const customerRouter = Router()
 
 
-// customerRouter.get("/addtowishlist/:id", auth, addToWishlist)
-// customerRouter.get("/removefromwishlist/:id", auth, removeFromWishlist)
+customerRouter.get("/addtowishlist/:id", auth, addToWishlist)
+customerRouter.get("/removefromwishlist/:id", auth, removeFromWishlist)
 // customerRouter.get("/getwishlist", auth, getWishlist)
 
 // customerRouter.post("/placebid", auth, placeBid)
