@@ -16,7 +16,13 @@ const sequelize = new Sequelize(
     {
         host: process.env.MYSQL_HOST,
         dialect: 'mysql',
-        port: 3306,
+        pool: {
+            max: 15,
+            min: 5,
+            idle: 20000,
+            evict: 15000,
+            acquire: 30000
+        },
         define: {
             freezeTableName: true
         }
