@@ -5,8 +5,16 @@ const Product = require("../models/Product")
 exports.sell = async(req,res) =>{
     try{
         
-        const bid = await Bid.findByIdAndUpdate(req.params.id, {winner : true})
-        const auction = await Product.findByIdAndUpdate(bid.auction, {status: "sold", statusat: new Date(), winner: bid.placedby}, {new: true})
+        await Bid.update({winner : true}, {where: {_id: req.params.id}})
+
+        const bid = await Bid.findByPk(req.params.id)
+
+        await Product.update(
+            {status: "sold", statusat: new Date(), winner: bid.placedby},
+            {where:{_id: bid.auction}}
+        )
+
+        const auction = await Product.findByPk(bid.auction)
         
         //remove balance from customer's accont
         //add to the sellers account

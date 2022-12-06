@@ -66,10 +66,10 @@ exports.signup = async(req, res) => {
             throw new Error("Username is already taken, Please choose unique username.")
         }
 
-        const verified = await verifyOTP(mobile, code)
-        if(verified.message){
-            throw new Error(verified.message)
-        }
+        // const verified = await verifyOTP(mobile, code)
+        // if(verified.message){
+        //     throw new Error(verified.message)
+        // }
 
         const newMember = await Member.create(req.body)
         const token = jwt.sign({_id: newMember._id.toString()}, process.env.JWT_SECRET)

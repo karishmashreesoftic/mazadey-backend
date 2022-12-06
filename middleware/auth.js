@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Member = require("../models/Member");
+const Photos = require('../models/Photos');
+const Product = require('../models/Product');
 const Wishlist = require('../models/Wishlist');
 //const Admin = require('../models/Admin');
 
@@ -11,19 +13,6 @@ exports.auth = async (req, res, next) => {
 
         let member;
         member = await Member.findByPk(decoded._id)
-        // member = await Member.findByPk(
-        //     decoded._id,
-        //     {
-        //         include: [
-        //             {
-        //                 model: Wishlist,
-        //                 as: "photos",
-        //                 attributes: ['ppath']
-        //             }
-        //         ]
-        //     }
-        // );
-
         if(!member){
             throw new Error()
         }
@@ -33,6 +22,7 @@ exports.auth = async (req, res, next) => {
         next()
         
     }catch(e){
+        console.log("-========================",e.message)
         res.status(401).send({message: "Please authenticate...!!!"})
     }
 }

@@ -1,5 +1,7 @@
 const Bid = require("../models/Bid")
+const Member = require("../models/Member")
 const Product = require("../models/Product")
+const Wishlist = require("../models/Wishlist")
 
 
 exports.placeBid = async(req, res) => {
@@ -7,7 +9,7 @@ exports.placeBid = async(req, res) => {
 
         if(req.member.membertype==="customer"){
             
-            const auction = await Product.findById(req.body.auction)
+            const auction = await Product.findByPk(req.body.auction)
             if(!auction){
                 throw new Error("Auction not found")
             }
@@ -21,24 +23,15 @@ exports.placeBid = async(req, res) => {
             let data = {
                 ...req.body,
                 placedby: req.member._id,
-                createdat: new Date()
             }
 
-            const alreadyplaced = await Bid.findOne({placedby: req.member._id, auction: req.body.auction})
+            const alreadyplaced = await Bid.findOne({where: {placedby: req.member._id, auction: req.body.auction}})
+            let bid;
             if(alreadyplaced){
-                await Bid.findByIdAndUpdate(alreadyplaced._id, data)
+                bid = await Bid.update(data,{where: {_id: alreadyplaced._id}})
             }else{
-                const newBid = new Bid(data)
-                await newBid.save()
+                bid = await Bid.create(data)
             }
-
-            const bids = await Bid.find({auction: req.body.auction}).sort({"amount": "desc"})
-            let bidlist = []
-            for(let i=0; i< bids.length; i++){
-                bidlist.push(bids[i]._id)
-            }
-
-            await Product.findByIdAndUpdate(req.body.auction, {bids: bidlist}, {new: true})
 
             res.status(201).send({amount: req.body.amount})            
 
@@ -55,17 +48,8 @@ exports.deleteBid = async(req, res) => {
     try{
 
         if(req.member.membertype==="customer"){
-            
-            const bid = await Bid.findByIdAndDelete(req.params.id)
 
-            const bids = await Bid.find({auction: bid.auction}).sort({"amount": "desc"})
-            let bidlist = []
-            for(let i=0; i< bids.length; i++){
-                bidlist.push(bids[i]._id)
-            }
-
-            await Product.findByIdAndUpdate(req.body.auction, {bids: bidlist}, {new: true})
-
+            await Bid.destroy({where: {_id: req.params.id}})
             res.status(200).send({message: "Success"})           
 
         }else{
@@ -81,12 +65,27 @@ exports.getBids = async(req, res) => {
     try{
 
         if(req.member.membertype==="seller"){
-   
-            const bids = await Bid
-                                .find({auction: req.params.id})
-                                .sort({"amount": "desc"})
-                                .populate('placedby', 'fullname')
-                                .select('amount placedby winner')
+
+            const bids = await Bid.findAll(
+                {
+                    where: {
+                        auction: req.params.id
+                    },
+                    include: [
+                        {
+                            model: Member,
+                            as:"bidplacedby",
+                            attributes: ["_id", "fullname"],
+                        }
+                    ],
+                    order: [
+                        ['amount', 'DESC'],
+                    ],
+                    attributes:["_id", "amount", "winner"],
+                    raw: true,
+                    nest: true
+                }
+            )
 
             res.status(201).send(bids)
 
@@ -102,12 +101,28 @@ exports.getBids = async(req, res) => {
 exports.getMaxBid = async(req, res) => {
     try{
 
-        const auction = await Product.findById(req.params.id).select("bids").populate({
-            path: "bids",
-            select: "placedby amount",
-            populate: {path: 'placedby', select: "fullname"}
-        })
-        res.status(201).send(auction.bids[0])
+        const bids = await Bid.findOne(
+            {
+                where: {
+                    auction: req.params.id
+                },
+                include: [
+                    {
+                        model: Member,
+                        as:"bidplacedby",
+                        attributes: ["_id", "fullname"],
+                    }
+                ],
+                order: [
+                    ['amount', 'DESC'],
+                ],
+                attributes:["_id","amount"],
+                raw: true,
+                nest: true
+            }
+        )
+
+        res.status(201).send(bids)
 
     }catch(error){
         res.send({message: error.message})
@@ -120,15 +135,44 @@ exports.getMyBid = async(req, res) => {
 
         if(req.member.membertype==="customer"){
             
-            const bids = await Bid.find({placedby: req.member._id}).populate('auction', 'title description minbid').lean()
+            // const bids = await Bid.find({placedby: req.member._id}).populate('auction', 'title description description').lean()
+
+            const bids = await Bid.findAll(
+                {
+                    where: {
+                        placedby: req.member._id
+                    },
+                    include: [
+                        {
+                            model: Product,
+                            as:"bids",
+                            attributes: ["_id", 'title', 'description', 'minbid'],
+                        }
+                    ],
+                    attributes:["_id"],
+                    raw: true,
+                    nest: true
+                }
+            )
+
+            const w = await Wishlist.findAll({
+                where: {
+                    MemberID: req.member._id
+                },
+            })
+
+            let wishlist = []
+            for(let i in w){
+                wishlist.push(w[i].ProductId)
+            }
 
             let finalBids = []
             for(let i in bids){
                 var t;
-                if(req.member.wishlist.includes(bids[i]._id)){
-                    t = {...bids[i], "wishlisted": true}
+                if(wishlist.includes(bids[i].bids._id)){
+                    t = {...bids[i].bids, "wishlisted": true}
                 }else{
-                    t = {...bids[i], "wishlisted": false}
+                    t = {...bids[i].bids, "wishlisted": false}
                 }
                 finalBids.push(t)
             }

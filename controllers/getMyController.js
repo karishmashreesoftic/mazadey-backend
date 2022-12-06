@@ -1,12 +1,28 @@
 const Bid = require("../models/Bid")
+const Member = require("../models/Member")
+const Photos = require("../models/Photos")
 const Product = require("../models/Product")
+const Wishlist = require("../models/Wishlist")
 
 exports.getListing = async(req, res) => {
     try{
 
         if(req.member.membertype==="seller"){
             
-            const l = await Product.find({createdby: req.member._id, type: "ad"}).select('title type photos')
+            const l = await Product.findAll(
+                {
+                    where :{createdby: req.member._id, type: "ad"},
+                    include: [
+                        {
+                            model: Photos,
+                            as: "photos",
+                            attributes: ['ppath']
+                        }
+                    ],
+                    attributes: ["title", "type", "_id"]
+                }
+            )
+
             res.status(201).send(l)
 
         }else{
@@ -22,24 +38,68 @@ exports.getAuctions = async(req, res) => {
     try{
 
         if(req.member.membertype==="seller"){
-            
-            const l = await Product.find({createdby: req.member._id, type: "auction"}).select('title type photos').lean()
+
+            const l = await Product.findAll(
+                {
+                    where :{createdby: req.member._id, type: "auction"},
+                    include: [
+                        {
+                            model: Photos,
+                            as: "photos",
+                            attributes: ['ppath']
+                        }
+                    ],
+                    attributes: ["title", "type", "_id"],
+                    raw: true,
+                    nest: true
+                }
+            )
+
+            const w = await Wishlist.findAll({
+                where: {
+                    MemberID: req.member._id
+                },
+            })
+
+            let wishlist = []
+            for(let i in w){
+                wishlist.push(w[i].ProductId)
+            }
         
             let finalList = []
             for(let i in l){
                 var t;
-                if(req.member.wishlist.includes(l[i]._id)){
+                if(wishlist.includes(l[i]._id)){
                     t = {...l[i], "wishlisted": true}
                 }else{
                     t = {...l[i], "wishlisted": false}
                 }
 
-                const bids = await Bid.find({auction: l[i]._id}).sort({"amount": "desc"}).lean()
+                const bids = await Bid.findOne(
+                    {
+                        where: {
+                            auction: l[i]._id
+                        },
+                        include: [
+                            {
+                                model: Member,
+                                as:"bidplacedby",
+                                attributes: ["_id", "fullname"],
+                            }
+                        ],
+                        order: [
+                            ['amount', 'DESC'],
+                        ],
+                        attributes:["_id","amount"],
+                        raw: true,
+                        nest: true
+                    }
+                )
                 t = {
                     ...t, 
                     "maxbid" : {
-                        amount: bids.length!==0 ? bids[0].amount : 0,
-                        placedby: bids.length!==0 ? bids[0].placedby : null
+                        amount: bids ? bids.amount : 0,
+                        placedby: bids ? bids.bidplacedby._id : null
                     }
                 }
                 finalList.push(t)

@@ -22,10 +22,16 @@ Wishlist.belongsTo(Product)
 Member.belongsToMany(Product, {through: Wishlist, foreignKey: 'MemberID', as: 'wishlist'})
 Product.belongsToMany(Member, {through: Wishlist, foreignKey: 'ProductId', as: 'wishlistees'})
 
-Member.hasMany(Bid, {foreignKey: "placedby", as: "mybids"})
-Bid.belongsTo(Member)
+
+// Bid.belongsTo(Member, {foreignKey: 'placedby', as: 'bidplacedby'})
+// Bid.belongsTo(Product, {foreignKey: 'auction', as: 'bids'})
+// Member.belongsToMany(Product, {through: Bid, foreignKey: 'placedby', as: 'bidplacedby'})
+// Product.belongsToMany(Member, {through: Bid, foreignKey: 'auction', as: 'bids'})
+
+Member.hasMany(Bid, {foreignKey: "placedby", as: "bidplacedby"})
+Bid.belongsTo(Member, {foreignKey: "placedby", as: "bidplacedby"})
 Product.hasMany(Bid, {foreignKey: "auction", as: "bids"})
-Bid.belongsTo(Product)
+Bid.belongsTo(Product, {foreignKey: "auction", as: "bids"})
 
 Product.hasMany(Photos, {foreignKey: "product", as: "photos"})
 Photos.belongsTo(Product)

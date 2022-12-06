@@ -31,11 +31,11 @@ commonRouter.post("/verifyemailcode", verifyEmailCode)
 
 commonRouter.post("/uploadqid", auth, upload.single("qid"), uploadQid)
 
-// commonRouter.get("/getad/:id", auth, getSingleAd)
-// commonRouter.get("/getauction/:id", auth, getSingleAuction)
-// commonRouter.get("/getmaxbid/:id", auth, getMaxBid)
+commonRouter.get("/getad/:id", auth, getSingleAd)
+commonRouter.get("/getauction/:id", auth, getSingleAuction)
+commonRouter.get("/getmaxbid/:id", auth, getMaxBid)
 
-// commonRouter.get("/getitems/filter?", auth, getProducts)
+commonRouter.get("/getitems/filter?", auth, getProducts)
 
 // commonRouter.post("/addbalance", auth)
 // commonRouter.post("/withdrawbalance", auth)

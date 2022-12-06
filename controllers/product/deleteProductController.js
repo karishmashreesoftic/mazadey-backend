@@ -1,31 +1,55 @@
+const { unlinkSync } = require("fs-extra")
 const { ObjectId } = require("mongodb")
 const Bid = require("../../models/Bid")
+const Documents = require("../../models/Documents")
+const Photos = require("../../models/Photos")
 const Product = require("../../models/Product")
+const dirpath = require("path")
+const Wishlist = require("../../models/Wishlist")
 
 exports.deleteAd = async(req,res) =>{
     try{
 
         if(req.member.membertype==="seller"){
 
-            const ad = await Product.findById(req.params.id)
+            const ad = await Product.findByPk(
+                req.params.id,
+                {
+                    include: [
+                        {
+                            model: Photos,
+                            as: "photos",
+                            attributes: ['ppath',"_id"]
+                        },
+                        {
+                            model: Documents,
+                            as: "documents",
+                            attributes: ['dpath',"_id"]
+                        },
+                    ],
+                }
+            )
+
+            
             if(!ad){
                 throw new Error("No Ad Found")
             }
-            // if(ad.photos){
-            //     let ps = ad.photos
-            //     for(let i=0; i<ps.length; i++){
-            //         gfs.delete(ObjectId(ps[i].pid))
-            //     }
-            // }
-            // if(ad.documents){
-            //     let docs = ad.documents
-            //     for(let i=0; i<docs.length; i++){
-            //         gfs.delete(ObjectId(docs[i].did))
-            //     }
-            // }
-    
-            await Product.findByIdAndDelete(req.params.id)
 
+            for(let i in ad.photos){
+                let path = ad.photos[i].ppath.replace(process.env.BASE_URL,"")
+                unlinkSync(dirpath.join(__dirname, '../..'+path))
+                await Photos.destroy({where: {_id: ad.photos[i]._id}})
+            }
+
+            for(let i in ad.documents){
+                let path = ad.documents[i].dpath.replace(process.env.BASE_URL,"")
+                unlinkSync(dirpath.join(__dirname, '../..'+path))
+                await Documents.destroy({where: {_id: ad.documents[i]._id}})
+            }
+
+            await Wishlist.destroy({where: {ProductId: req.params.id}})
+            await Product.destroy({where: {_id: req.params.id}})
+            
             res.status(200).send({message: "Success"}) 
 
         }else{
@@ -42,27 +66,45 @@ exports.deleteAuction = async(req,res) =>{
         
         if(req.member.membertype==="seller"){
 
-            const auc = await Product.findById(req.params.id)
-            if(!auc){
+            const auction = await Product.findByPk(
+                req.params.id,
+                {
+                    include: [
+                        {
+                            model: Photos,
+                            as: "photos",
+                            attributes: ['ppath',"_id"]
+                        },
+                        {
+                            model: Documents,
+                            as: "documents",
+                            attributes: ['dpath',"_id"]
+                        },
+                    ],
+                }
+            )
+
+            
+            if(!auction){
                 throw new Error("No Auction Found")
             }
-            // if(auc.photos){
-            //     let ps = auc.photos
-            //     for(let i=0; i<ps.length; i++){
-            //         gfs.delete(ObjectId(ps[i].pid))
-            //     }
-            // }
-            // if(auc.documents){
-            //     let docs = auc.documents
-            //     for(let i=0; i<docs.length; i++){
-            //         gfs.delete(ObjectId(docs[i].did))
-            //     }
-            // }
-            for(let i=0; i<auc.bids.length; i++){
-                await Bid.findByIdAndDelete(auc.bids[i])
+
+            for(let i in auction.photos){
+                let path = auction.photos[i].ppath.replace(process.env.BASE_URL,"")
+                unlinkSync(dirpath.join(__dirname, '../..'+path))
+                await Photos.destroy({where: {_id: auction.photos[i]._id}})
             }
 
-            await Product.findByIdAndDelete(req.params.id)
+            for(let i in auction.documents){
+                let path = auction.documents[i].dpath.replace(process.env.BASE_URL,"")
+                unlinkSync(dirpath.join(__dirname, '../..'+path))
+                await Documents.destroy({where: {_id: auction.documents[i]._id}})
+            }
+
+            await Bid.destroy({where: {auction: req.params.id}})
+            await Wishlist.destroy({where: {ProductId: req.params.id}})
+            await Product.destroy({where: {_id: req.params.id}})
+
             res.status(200).send({message: "Success"}) 
 
         }else{
