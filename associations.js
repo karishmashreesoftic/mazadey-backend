@@ -6,6 +6,7 @@ const Product = require("./models/Product");
 const Documents = require("./models/Documents");
 const Photos = require("./models/Photos");
 const Wishlist = require("./models/Wishlist");
+const ContactUs = require("./models/ContactUs");
 
 
 Member.hasMany(Token, {foreignKey: "member", as: "tokens"})
@@ -14,6 +15,9 @@ Token.belongsTo(Member)
 Member.hasMany(Product, {foreignKey: "createdby", as: "creator"})
 Product.belongsTo(Member)
 
+Member.hasMany(ContactUs, {foreignKey: "sendby", as: "sender"})
+ContactUs.belongsTo(Member)
+
 Member.hasOne(Qid, {foreignKey: "member"})
 Qid.belongsTo(Member)
 
@@ -21,7 +25,6 @@ Wishlist.belongsTo(Member)
 Wishlist.belongsTo(Product)
 Member.belongsToMany(Product, {through: Wishlist, foreignKey: 'MemberID', as: 'wishlist'})
 Product.belongsToMany(Member, {through: Wishlist, foreignKey: 'ProductId', as: 'wishlistees'})
-
 
 // Bid.belongsTo(Member, {foreignKey: 'placedby', as: 'bidplacedby'})
 // Bid.belongsTo(Product, {foreignKey: 'auction', as: 'bids'})

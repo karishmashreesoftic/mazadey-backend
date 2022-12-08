@@ -13,6 +13,9 @@ const { getProfile, editProfile } = require("../controllers/memberProfileControl
 const { changePassword } = require("../controllers/password/changePasswordController");
 const { getProducts } = require("../controllers/product/getProductsController");
 const { createPassword } = require("../controllers/password/createNewPasswordController");
+const { deleteAccount } = require("../controllers/deleteAccountController");
+const { getFAQ } = require("../controllers/getFAQ");
+const { contactUs } = require("../controllers/contactUsController");
 
 const commonRouter = Router()
 
@@ -43,10 +46,16 @@ commonRouter.get("/getitems/filter?", auth, getProducts)
 commonRouter.get("/logout", auth, logout)
 commonRouter.get("/logoutall", auth, logoutAll)
 
+commonRouter.delete("/deleteaccount", auth, deleteAccount)
+
 commonRouter.get("/getprofile", auth, getProfile)
 commonRouter.post("/editprofile", auth, editProfile)
 
 commonRouter.post("/changepassword", auth, changePassword)
 commonRouter.post("/createnewpassword", createPassword)
+
+commonRouter.get("/getfaq", auth, getFAQ)
+
+commonRouter.post("/contactus", auth, contactUs)
 
 module.exports = commonRouter;
