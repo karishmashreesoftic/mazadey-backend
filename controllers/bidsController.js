@@ -1,5 +1,6 @@
 const Bid = require("../models/Bid")
 const Member = require("../models/Member")
+const Photos = require("../models/Photos")
 const Product = require("../models/Product")
 const Wishlist = require("../models/Wishlist")
 
@@ -142,14 +143,21 @@ exports.getMyBid = async(req, res) => {
                     where: {
                         placedby: req.member._id
                     },
+                    attributes:["_id", "amount"],
                     include: [
                         {
                             model: Product,
                             as:"bids",
-                            attributes: ["_id", 'title', 'description', 'minbid'],
+                            attributes: ["_id", 'title', 'description'],
+                            include: [
+                                {
+                                    model: Photos,
+                                    as: "photos",
+                                    attributes: ['ppath']
+                                }
+                            ]
                         }
                     ],
-                    attributes:["_id"],
                     raw: true,
                     nest: true
                 }
@@ -170,9 +178,19 @@ exports.getMyBid = async(req, res) => {
             for(let i in bids){
                 var t;
                 if(wishlist.includes(bids[i].bids._id)){
-                    t = {...bids[i].bids, "wishlisted": true}
+                    t = {
+                        _id: bids[i]._id,
+                        amount: bids[i].amount,
+                        auction: bids[i].bids,
+                        wishlisted: true
+                    }
                 }else{
-                    t = {...bids[i].bids, "wishlisted": false}
+                    t = {
+                        _id: bids[i]._id,
+                        amount: bids[i].amount,
+                        auction: bids[i].bids,
+                        wishlisted: false
+                    }
                 }
                 finalBids.push(t)
             }

@@ -1,7 +1,6 @@
 
 const { DataTypes } = require("sequelize");
 const sequelize = require('../db');
-const Member = require("./Member");
 
 const Qid = sequelize.define('MZ_QID',{
 
