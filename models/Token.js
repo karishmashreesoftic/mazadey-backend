@@ -15,8 +15,8 @@ const Token = sequelize.define('MZ_TOKENS',{
         allowNull: false,
     },
     member:{
-        type: DataTypes.UUID,
-    },
+        type: DataTypes.INTEGER,
+    }
 
 })
 

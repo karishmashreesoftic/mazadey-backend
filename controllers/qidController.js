@@ -1,5 +1,3 @@
-const Member = require("../models/Member")
-const crypto = require("crypto");
 const Qid = require("../models/Qid");
 
 exports.uploadQid = async(req,res) =>{

@@ -29,33 +29,33 @@ commonRouter.post("/signup", signup)
 
 commonRouter.post("/login", login)
 
-commonRouter.post("/sendemailcode", sendToEmail)
-commonRouter.post("/verifyemailcode", verifyEmailCode)
+// commonRouter.post("/sendemailcode", sendToEmail)
+// commonRouter.post("/verifyemailcode", verifyEmailCode)
 
 commonRouter.post("/uploadqid", auth, upload.single("qid"), uploadQid)
 
-commonRouter.get("/getad/:id", auth, getSingleAd)
-commonRouter.get("/getauction/:id", auth, getSingleAuction)
-commonRouter.get("/getmaxbid/:id", auth, getMaxBid)
+// commonRouter.get("/getad/:id", auth, getSingleAd)
+// commonRouter.get("/getauction/:id", auth, getSingleAuction)
+// commonRouter.get("/getmaxbid/:id", auth, getMaxBid)
 
-commonRouter.get("/getitems/filter?", auth, getProducts)
+// commonRouter.get("/getitems/filter?", auth, getProducts)
 
 // commonRouter.post("/addbalance", auth)
 // commonRouter.post("/withdrawbalance", auth)
 
-commonRouter.get("/logout", auth, logout)
-commonRouter.get("/logoutall", auth, logoutAll)
+// commonRouter.get("/logout", auth, logout)
+// commonRouter.get("/logoutall", auth, logoutAll)
 
-commonRouter.delete("/deleteaccount", auth, deleteAccount)
+// commonRouter.delete("/deleteaccount", auth, deleteAccount)
 
-commonRouter.get("/getprofile", auth, getProfile)
-commonRouter.post("/editprofile", auth, editProfile)
+// commonRouter.get("/getprofile", auth, getProfile)
+// commonRouter.post("/editprofile", auth, editProfile)
 
-commonRouter.post("/changepassword", auth, changePassword)
-commonRouter.post("/createnewpassword", createPassword)
+// commonRouter.post("/changepassword", auth, changePassword)
+// commonRouter.post("/createnewpassword", createPassword)
 
-commonRouter.get("/getfaq", auth, getFAQ)
+// commonRouter.get("/getfaq", auth, getFAQ)
 
-commonRouter.post("/contactus", auth, contactUs)
+// commonRouter.post("/contactus", auth, contactUs)
 
 module.exports = commonRouter;

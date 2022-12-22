@@ -9,8 +9,7 @@ const Bid = require("./Bid");
 const Member = sequelize.define('MZ_MEMBERS',{
 
     _id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV1,
+        type: DataTypes.INTEGER,
         primaryKey: true
     },
     fullname:{
@@ -27,14 +26,6 @@ const Member = sequelize.define('MZ_MEMBERS',{
     },
     email:{
         type: DataTypes.STRING,
-        allowNull: false
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    membertype:{ 
-        type: DataTypes.STRING, 
         allowNull: false
     },
     fcmtoken:{ 
@@ -56,14 +47,14 @@ const Member = sequelize.define('MZ_MEMBERS',{
     status:{ type: DataTypes.STRING, defaultValue: "pending" },
 })
 
-Member.beforeCreate(async (member, options) => {
+// Member.beforeCreate(async (member, options) => {
 
-    // console.log("beforeCreate...",member)
+//     // console.log("beforeCreate...",member)
 
-    member.password = await bcrypt.hash(member.password, 8);
-    // console.log("after..",member)
+//     member.password = await bcrypt.hash(member.password, 8);
+//     // console.log("after..",member)
 
-});
+// });
 
 // Member.Instance.prototype.generateAuthToken = function () {
 //     console.log(this.title);
@@ -79,20 +70,20 @@ Member.beforeCreate(async (member, options) => {
 //     return token
 // }
 
-Member.findByCredentials = async (email, password) => {
+// Member.findByCredentials = async (email, password) => {
 
-    let m = await Member.findOne({where: {email}})
-    if (!m) {
-        throw new Error(
-            "There is no account with given Email. Please signup first to login !"
-        );
-    }
-    const isMatch = await bcrypt.compare(password, m.password);
-    if (!isMatch) {
-        throw new Error("The entered password is incorrect");
-    }
-    return m;
-}
+//     let m = await Member.findOne({where: {email}})
+//     if (!m) {
+//         throw new Error(
+//             "There is no account with given Email. Please signup first to login !"
+//         );
+//     }
+//     const isMatch = await bcrypt.compare(password, m.password);
+//     if (!isMatch) {
+//         throw new Error("The entered password is incorrect");
+//     }
+//     return m;
+// }
 
 
 module.exports = Member

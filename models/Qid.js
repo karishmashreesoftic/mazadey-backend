@@ -13,8 +13,8 @@ const Qid = sequelize.define('MZ_QID',{
         type: DataTypes.STRING,
     },
     member:{
-        type: DataTypes.UUID,
-    },
+        type: DataTypes.INTEGER,
+    }
 })
 
 module.exports = Qid

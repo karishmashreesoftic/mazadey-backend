@@ -1,16 +1,31 @@
 const Member =  require('../../models/Member')
 const jwt = require('jsonwebtoken');
 const Token = require('../../models/Token');
+const axios = require("axios")
 
 exports.login = async(req,res) =>{
     try{
-        const member = await Member.findByCredentials(req.body.email,req.body.password)
 
-        const token = jwt.sign({_id: member._id.toString()}, process.env.JWT_SECRET)
+        const response = await axios.post("https://mzadey.com/wp-json/aam/v2/authenticate?", null, { params: {
+            password: req.body.password,
+            username: req.body.email,
+        }})
+        // console.log("response.data...",response.status)
+        const data = await response.data
+        
+
+        const member = await Member.findByPk(data.user.data.ID)
+        const token = jwt.sign({_id: member._id}, process.env.JWT_SECRET)
         const newToken = await Token.create({token: token, member: member._id})
 
         res.status(201).send({member, token: newToken.token,message: "Login Successful"})
     }catch(error){
-        res.send({message: error.message})
+        let msg;
+        if(error.response.data.reason){
+            msg = "There is no account with given email address or password is incorrect."
+        }else{
+            msg = error.message
+        }
+        res.send({message: msg})
     }   
 }
