@@ -1,4 +1,3 @@
-const Member =  require('../../models/Member')
 const Token = require('../../models/Token')
 
 exports.logout = async(req,res) =>{

@@ -43,8 +43,8 @@ commonRouter.post("/uploadqid", auth, upload.single("qid"), uploadQid)
 // commonRouter.post("/addbalance", auth)
 // commonRouter.post("/withdrawbalance", auth)
 
-// commonRouter.get("/logout", auth, logout)
-// commonRouter.get("/logoutall", auth, logoutAll)
+commonRouter.get("/logout", auth, logout)
+commonRouter.get("/logoutall", auth, logoutAll)
 
 // commonRouter.delete("/deleteaccount", auth, deleteAccount)
 
