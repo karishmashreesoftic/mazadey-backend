@@ -13,7 +13,7 @@ exports.login = async(req,res) =>{
         }})
         // console.log("response.data...",response.status)
         const data = await response.data
-    
+        console.log("data..",data)
         const member = await Member.findByPk(data.user.data.ID)
         const qid = await Qid.findOne({where: {member: member._id}})
         const flag = qid ? true : false
