@@ -22,7 +22,7 @@ const server = require('http').createServer(app)
 //        }
 // })
 
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+// app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 app.use(bodyParser.json())
 app.use(cors());
