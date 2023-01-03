@@ -107,7 +107,7 @@ exports.signup = async(req, res) => {
 
     }catch(error){
         console.log("error.exception...",error.exception)
-        console.log("error.message...",error.message)
+        console.log("error.message...",error)
         res.send({message: error.message})
     }   
 }
