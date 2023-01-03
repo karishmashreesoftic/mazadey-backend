@@ -11,23 +11,34 @@
 // const Product = sequelize.define('MZ_PRODUCTS',{
 
 //     _id: {
-//         type: DataTypes.UUID,
-//         defaultValue: DataTypes.UUIDV1,
+//         type: DataTypes.INTEGER,
 //         primaryKey: true
 //     },
-//     category:{
+//     type:{
 //         type: DataTypes.STRING,
 //         allowNull: false
 //     },
-//     title:{
+//     price:{ 
+//         type: DataTypes.INTEGER, 
+//         defaultValue: 0 
+//     },
+//     startbid:{ 
+//         type: DataTypes.INTEGER, 
+//         defaultValue: 0 
+//     },
+//     minbid:{ 
+//         type: DataTypes.INTEGER, 
+//         defaultValue: 0 
+//     },
+//     time:{
 //         type: DataTypes.STRING,
 //         allowNull: false
 //     },
-//     description:{ 
+//     category:{ 
 //         type: DataTypes.STRING,
 //         allowNull: false
 //     },
-//     mobile:{
+//     acquire:{
 //         type: DataTypes.STRING,
 //         allowNull: false
 //     },
@@ -35,14 +46,8 @@
 //         type: DataTypes.STRING,
 //         allowNull: false
 //     },
-//     minbid:{ 
-//         type: DataTypes.INTEGER, 
-//         defaultValue: 0 
-//     },
-//     price:{ 
-//         type: DataTypes.INTEGER, 
-//         defaultValue: 0 
-//     },
+
+
 //     type:{ 
 //         type: DataTypes.STRING, 
 //         allowNull: false

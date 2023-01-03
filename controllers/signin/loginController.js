@@ -7,11 +7,15 @@ const Qid = require('../../models/Qid');
 exports.login = async(req,res) =>{
     try{
 
-        const response = await axios.post("https://mzadey.com/wp-json/aam/v2/authenticate?", null, { params: {
-            password: req.body.password,
-            username: req.body.email,
-        }})
-        // console.log("response.data...",response.status)
+        const response = await axios.post("https://mzadey.com/wp-json/aam/v2/authenticate?", null, { 
+            params: {
+                password: req.body.password,
+                username: req.body.email,
+            },
+            headers: {
+                "Accept-Encoding": "gzip,deflate,compress"
+            }
+        })
         const data = await response.data
         console.log("data..",data)
         const member = await Member.findByPk(data.user.data.ID)

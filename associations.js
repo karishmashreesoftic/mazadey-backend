@@ -1,6 +1,6 @@
 const Member = require("./models/Member");
 const Token = require("./models/Token");
-const Qid = require("./models/Qid");
+// const Qid = require("./models/Qid");
 // const Bid = require("./models/Bid");
 // const Product = require("./models/Product");
 // const Documents = require("./models/Documents");
@@ -18,8 +18,8 @@ Token.belongsTo(Member)
 // Member.hasMany(ContactUs, {foreignKey: "sendby", as: "sender"})
 // ContactUs.belongsTo(Member)
 
-Member.hasOne(Qid, {foreignKey: "member"})
-Qid.belongsTo(Member)
+// Member.hasOne(Qid, {foreignKey: "member"})
+// Qid.belongsTo(Member)
 
 // Wishlist.belongsTo(Member)
 // Wishlist.belongsTo(Product)

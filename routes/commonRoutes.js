@@ -25,14 +25,18 @@ commonRouter.get("/", (req,res)=>{
 })
 
 commonRouter.post("/sendotp", sendOTP)
-commonRouter.post("/signup", signup)
+commonRouter.post("/signup", upload.single("qid"), signup)
+// commonRouter.post("/checkdata", async (req,res) => {
+//     console.log("req.body...",req.body)
+//     console.log("req.headers...",req.headers)
+// })
 
 commonRouter.post("/login", login)
 
 // commonRouter.post("/sendemailcode", sendToEmail)
 // commonRouter.post("/verifyemailcode", verifyEmailCode)
 
-commonRouter.post("/uploadqid", auth, upload.single("qid"), uploadQid)
+// commonRouter.post("/uploadqid", auth, upload.single("qid"), uploadQid)
 
 // commonRouter.get("/getad/:id", auth, getSingleAd)
 // commonRouter.get("/getauction/:id", auth, getSingleAuction)

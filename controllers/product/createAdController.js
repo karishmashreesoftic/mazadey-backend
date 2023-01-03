@@ -4,74 +4,115 @@ const crypto = require("crypto");
 const validator = require("validator");
 const Photos = require("../../models/Photos");
 const Documents = require("../../models/Documents");
+var FormData = require('form-data');
+const axios = require('axios');
+const fs = require("fs")
 
 exports.createAd = async(req, res) => {
     try{
 
-        if(req.member.membertype==="seller"){
-
-            if(req.body.email){
-                if (!validator.isEmail(req.body.email)) {
-                    throw new Error("Enter a valid Email Address");
-                  }
-            }
-            if(req.body.mobile){
-                if(!validatePhoneNumber.validate(req.body.mobile)){
-                    throw new Error("Enter a valid Mobile Number");  
-                }
-            }
-
-            const newAd = await Product.create(
-                {
-                    ...req.body,
-                    statusat: new Date(),
-                    createdby: req.member._id
-                }
-            )
-
-            if(req.files.photos){
-                for(let i=0; i<req.files.photos.length; i++){
-                    let file = req.files.photos[i]
-                    await Photos.create({
-                        ppath : process.env.BASE_URL+"/uploads/"+file.filename, 
-                        product: newAd._id
-                    })
-                }
-            }
-            if(req.files.documents){
-                for(let i=0; i<req.files.documents.length; i++){
-                    let file = req.files.documents[i]
-                    await Documents.create({
-                        dpath : process.env.BASE_URL+"/uploads/"+file.filename, 
-                        product: newAd._id
-                    })
-                }
-            }
-            const product = await Product.findByPk(
-                newAd._id,
-                {
-                    include: [
-                        {
-                            model: Photos,
-                            as: "photos",
-                            attributes: ['ppath']
-                        },
-                        {
-                            model: Documents,
-                            as: "documents",
-                            attributes: ['dpath']
-                        }
-                    ]
-                }
-            )
-
-            res.status(201).send(product)
-
-        }else{
-            throw new Error("Only sellers are allowed to perform this action")
+        if(req.body.email){
+            if (!validator.isEmail(req.body.email)) {
+                throw new Error("Enter a valid Email Address");
+              }
         }
- 
+        if(req.body.mobile){
+            if(!req.body.mobile.includes("+")){
+                throw new Error("Please enter number with '+' and country code.")
+            }else if(!validatePhoneNumber.validate(req.body.mobile)){
+                throw new Error("Enter a valid Mobile Number");  
+            }
+        } 
+
+        const authtoken = "tomasz@innovationnomads.com:s9TGktXDBM";
+        const encodedToken = Buffer.from(authtoken).toString('base64');
+        let photos = []
+        let photosurl = []
+
+        for(let i=0; i<req.files.length; i++){
+
+            let tfile = fs.createReadStream(req.files[i].path)
+            let pdata = new FormData()
+            pdata.append("file", tfile)
+    
+            let presponse = await axios.post("https://mzadey.com/wp-json/wp/v2/media", pdata, {
+                headers: {
+                    "Content-Type": "multipart/form-data;",
+                    'Authorization': 'Basic '+ encodedToken
+                }
+            })
+    
+            let photoid = await presponse.data
+            // console.log("photoid...",photoid)
+            photos.push(photoid.id)
+            photosurl.push(photoid.guid.rendered)
+            fs.unlinkSync(req.files[i].path)
+        }
+
+        let productdata = new FormData()
+        productdata.append("item_meta[73]", req.body.type) //Type
+        if(req.body.type==="E-Auction"){
+            productdata.append("item_meta[42]", req.body.startbid) //Starting Bid
+            productdata.append("item_meta[43]", req.body.minbid) //Minimum Bid
+            productdata.append("item_meta[76]", req.body.time) //Time
+        }else{
+            productdata.append("item_meta[74]", req.body.price) //Price
+        }
+        productdata.append("item_meta[45]", req.body.category) //Category
+        productdata.append("item_meta[44]", req.body.acquire) //From where you acquire
+        productdata.append("item_meta[41]", req.body.description) //Description
+        productdata.append("item_meta[65]", req.body.firstname) //First Name
+        productdata.append("item_meta[66]", req.body.lastname) //Last Name
+        productdata.append("item_meta[68]", req.body.email) //Email
+        productdata.append("item_meta[69]", req.body.mobile) //Mobile
+        // productdata.append("item_meta[71]", req.body.otp) //OTP
+
+        for(let i=0; i<photos.length; i++){
+            productdata.append("item_meta[46][]", photos[i]) //Photos
+        }
+
+        const productresponse = await axios.post("https://mzadey.com/wp-json/frm/v2/forms/7/entries", productdata, {
+            headers: {
+                "Content-Type": "multipart/form-data;",
+                "Accept-Encoding": "gzip,deflate,compress",
+                'Authorization': 'Basic '+ encodedToken,
+                "Cookie" : "transient_key=f; wp-wpml_current_admin_language_d41d8cd98f00b204e9800998ecf8427e=en"
+            },
+        });
+        
+        const product = await productresponse.data
+        // console.log("product..",product)
+
+        let p = {
+            id: product.id,
+            type: req.body.type,
+            category: req.body.category,
+            acquire: req.body.acquire,
+            description: req.body.description,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            mobile: req.body.mobile,
+            photos: photosurl
+        }
+        if(req.body.type==="E-Auction"){
+            p = {
+                ...p,
+                startbid: req.body.startbid,
+                minbid: req.body.minbid,
+                time: req.body.time,
+            }
+        }else{
+            p = {
+                ...p,
+                price: req.body.price,
+            }
+        }
+
+        res.status(201).send(p)
+
     }catch(error){
+        console.log("error...",error)
         res.send({message: error.message})
     }
 }
