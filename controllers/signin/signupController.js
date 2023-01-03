@@ -108,6 +108,8 @@ exports.signup = async(req, res) => {
         res.status(201).send({member: newMember, token : newToken.token, message: "Signup Successful"})
 
     }catch(error){
+        console.log("error.exception...",error.exception)
+        console.log("error.message...",error.message)
         res.send({message: error.message})
     }   
 }

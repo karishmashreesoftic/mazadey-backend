@@ -11,7 +11,7 @@ const { getSingleAd, getSingleAuction } = require("../controllers/product/getSin
 const { getMaxBid } = require("../controllers/bidsController");
 const { getProfile, editProfile } = require("../controllers/memberProfileController");
 const { changePassword } = require("../controllers/password/changePasswordController");
-const { getProducts } = require("../controllers/product/getProductsController");
+const { getProducts, getFilteredProducts } = require("../controllers/product/getProductsController");
 const { createPassword } = require("../controllers/password/createNewPasswordController");
 const { deleteAccount } = require("../controllers/deleteAccountController");
 const { getFAQ } = require("../controllers/getFAQ");
@@ -42,7 +42,8 @@ commonRouter.post("/login", login)
 // commonRouter.get("/getauction/:id", auth, getSingleAuction)
 // commonRouter.get("/getmaxbid/:id", auth, getMaxBid)
 
-// commonRouter.get("/getitems/filter?", auth, getProducts)
+commonRouter.get("/getfiltereditems/filter?", auth, getFilteredProducts)
+commonRouter.get("/getallitems", auth, getProducts)
 
 // commonRouter.post("/addbalance", auth)
 // commonRouter.post("/withdrawbalance", auth)

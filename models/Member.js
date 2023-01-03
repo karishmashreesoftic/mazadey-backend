@@ -14,27 +14,21 @@ const Member = sequelize.define('MZ_MEMBERS',{
     },
     firstname:{
         type: DataTypes.STRING,
-        allowNull: false
     },
     lastname:{
         type: DataTypes.STRING,
-        allowNull: false
     },
     fullname:{
         type: DataTypes.STRING,
-        allowNull: false
     },
     username:{ 
         type: DataTypes.STRING,
-        allowNull: false
     },
     password:{
         type: DataTypes.STRING,
-        allowNull: false
     },
     mobile:{
         type: DataTypes.STRING,
-        allowNull: false
     },
     email:{
         type: DataTypes.STRING,
@@ -42,7 +36,6 @@ const Member = sequelize.define('MZ_MEMBERS',{
     },
     qid:{
         type: DataTypes.STRING,
-        allowNull:false
     },
     fcmtoken:{ 
         type: DataTypes.STRING, 
