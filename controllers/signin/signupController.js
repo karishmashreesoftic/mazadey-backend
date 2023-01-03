@@ -8,10 +8,8 @@ const bcrypt = require('bcryptjs')
 const Token = require('../../models/Token')
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
-const fileToArrayBuffer = require('file-to-array-buffer')
 const fs = require("fs")
 var FormData = require('form-data');
-
 exports.signup = async(req, res) => {
     try{
 
