@@ -1,12 +1,12 @@
 const { Router } = require("express");
-const { getBids } = require("../controllers/bidsController");
-const { getListing, getAuctions } = require("../controllers/getMyController");
+// const { getBids } = require("../controllers/bidsController");
+// const { getListing, getAuctions } = require("../controllers/getMyController");
 const { createAd } = require("../controllers/product/createAdController");
-const { deleteAd, deleteAuction } = require("../controllers/product/deleteProductController");
-const { editAd } = require("../controllers/product/editProductsController");
-const { getMyAuction } = require("../controllers/product/getSingleProductConttroller");
-const { sell } = require("../controllers/sellController");
-const { auth } = require("../middleware/auth");
+// const { deleteAd, deleteAuction } = require("../controllers/product/deleteProductController");
+// const { editAd } = require("../controllers/product/editProductsController");
+// const { getMyAuction } = require("../controllers/product/getSingleProductConttroller");
+// const { sell } = require("../controllers/sellController");
+// const { auth } = require("../middleware/auth");
 const upload = require("../utils/multer");
 const sellerRouter = Router()
 
