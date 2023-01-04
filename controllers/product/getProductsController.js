@@ -245,13 +245,7 @@ exports.getSingleProduct = async(req,res) =>{
         res.status(200).send(final)
 
     }catch(error){
-        let m;
-        if(error.response.data.code==="frmapi_validate_entry"){
-            m = Object.values(error.response.data.message)
-        }else{
-            m = error.message
-        }
-        console.log("error.exception...",m)
-        res.send({message: m})
+        console.log("error...",error.message)
+        res.send({message: error.message})
     }   
 }

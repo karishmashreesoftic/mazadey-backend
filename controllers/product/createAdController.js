@@ -112,7 +112,13 @@ exports.createAd = async(req, res) => {
         res.status(201).send(p)
 
     }catch(error){
-        console.log("error...",error)
-        res.send({message: error.message})
+        let m;
+        if(error.response.data.code==="frmapi_validate_entry"){
+            m = Object.values(error.response.data.message)
+        }else{
+            m = error.message
+        }
+        console.log("error.exception...",m)
+        res.send({message: m})
     }
 }
