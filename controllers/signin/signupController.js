@@ -42,11 +42,11 @@ exports.signup = async(req, res) => {
             throw new Error("It is mandatory to upload qid")
         }
 
-        m = await Member.findOne({where: {email}})
-        if(m){
-            throw new Error(`Email address is already associated with other account.`)
-        }
-        console.log("m...",m)
+        // m = await Member.findOne({where: {email}})
+        // if(m){
+        //     throw new Error(`Email address is already associated with other account.`)
+        // }
+        // console.log("m...",m)
 
         const authtoken = "tomasz@innovationnomads.com:s9TGktXDBM";
         const encodedToken = Buffer.from(authtoken).toString('base64');
@@ -108,9 +108,13 @@ exports.signup = async(req, res) => {
         res.status(201).send({member: newMember, token : newToken.token, message: "Signup Successful"})
 
     }catch(error){
-
-        console.log("error.exception...",error.response.data)
-        console.log("error.message...",error.message)
-        res.send({message: error.message})
+        let m;
+        if(error.response.data.code==="frmapi_validate_entry"){
+            m = Object.values(error.response.data.message)
+        }else{
+            m = error.message
+        }
+        console.log("error.exception...",m)
+        res.send({message: m})
     }   
 }
