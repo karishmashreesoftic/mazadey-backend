@@ -16,7 +16,7 @@ const { getProducts, getFilteredProducts } = require("../controllers/product/get
 // const { deleteAccount } = require("../controllers/deleteAccountController");
 // const { getFAQ } = require("../controllers/getFAQ");
 // const { contactUs } = require("../controllers/contactUsController");
-const upload = require("../utils/multer");
+// const upload = require("../utils/multer");
 
 const commonRouter = Router()
 
