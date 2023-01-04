@@ -14,7 +14,7 @@ exports.signup = async(req, res) => {
     try{
         console.log("in controller.....")
         console.log("req.file...",req.file)
-        console.log('req.body...',req.body)
+        // console.log('req.body...',req.body)
         const {firstname, lastname, mobile, email, password, code} = req.body
 
         // if(fullname){
@@ -42,11 +42,11 @@ exports.signup = async(req, res) => {
             throw new Error("It is mandatory to upload qid")
         }
 
-        // m = await Member.findOne({where: {email}})
-        // if(m){
-        //     throw new Error(`Email address is already associated with other account.`)
-        // }
-        // console.log("m...",m)
+        m = await Member.findOne({where: {email}})
+        if(m){
+            throw new Error(`Email address is already associated with other account.`)
+        }
+        console.log("m...",m)
 
         const authtoken = "tomasz@innovationnomads.com:s9TGktXDBM";
         const encodedToken = Buffer.from(authtoken).toString('base64');
@@ -109,8 +109,8 @@ exports.signup = async(req, res) => {
 
     }catch(error){
 
-        // console.log("error.exception...",error.response.data)
-        // console.log("error.message...",error)
+        console.log("error.exception...",error.response.data)
+        console.log("error.message...",error.message)
         res.send({message: error.message})
     }   
 }
