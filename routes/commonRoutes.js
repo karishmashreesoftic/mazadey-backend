@@ -11,7 +11,8 @@ const upload = require("../utils/multer");
 // const { getMaxBid } = require("../controllers/bidsController");
 // const { getProfile, editProfile } = require("../controllers/memberProfileController");
 // const { changePassword } = require("../controllers/password/changePasswordController");
-// const { getProducts, getAuctions } = require("../controllers/product/getProductsController");
+const { getProducts, getAuctions, getSingleProduct } = require("../controllers/product/getProductsController");
+const { checkRole } = require("../controllers/roleController");
 // const { createPassword } = require("../controllers/password/createNewPasswordController");
 // const { deleteAccount } = require("../controllers/deleteAccountController");
 // const { getFAQ } = require("../controllers/getFAQ");
@@ -43,9 +44,10 @@ commonRouter.post("/login", login)
 // commonRouter.get("/getauction/:id", auth, getSingleAuction)
 // commonRouter.get("/getmaxbid/:id", auth, getMaxBid)
 
-// commonRouter.post("/getallauctions", auth, getAuctions)
-// commonRouter.post("/getallproducts", auth, getProducts)
-// commonRouter.post("/getitem/:id", auth, getSingleItem)
+commonRouter.post("/getallauctions", auth, getAuctions)
+commonRouter.post("/getallproducts", auth, getProducts)
+commonRouter.get("/getitem/:id", auth, getSingleProduct)
+commonRouter.get("/setrole", auth, checkRole)
 
 // commonRouter.post("/addbalance", auth)
 // commonRouter.post("/withdrawbalance", auth)

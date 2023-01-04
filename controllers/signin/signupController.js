@@ -42,10 +42,10 @@ exports.signup = async(req, res) => {
             throw new Error("It is mandatory to upload qid")
         }
 
-        m = await Member.findOne({where: {email}})
-        if(m){
-            throw new Error(`Email address is already associated with other account.`)
-        }
+        // m = await Member.findOne({where: {email}})
+        // if(m){
+        //     throw new Error(`Email address is already associated with other account.`)
+        // }
         // console.log("m...",m)
 
         const authtoken = "tomasz@innovationnomads.com:s9TGktXDBM";
@@ -108,8 +108,9 @@ exports.signup = async(req, res) => {
         res.status(201).send({member: newMember, token : newToken.token, message: "Signup Successful"})
 
     }catch(error){
-        console.log("error.exception...",error.exception)
-        console.log("error.message...",error)
+
+        // console.log("error.exception...",error.response.data)
+        // console.log("error.message...",error)
         res.send({message: error.message})
     }   
 }
