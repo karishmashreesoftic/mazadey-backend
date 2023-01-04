@@ -12,7 +12,9 @@ const fs = require("fs")
 var FormData = require('form-data');
 exports.signup = async(req, res) => {
     try{
-
+        console.log("in controller.....")
+        console.log("req.file...",req.file)
+        console.log('req.body...',req.body)
         const {firstname, lastname, mobile, email, password, code} = req.body
 
         // if(fullname){
