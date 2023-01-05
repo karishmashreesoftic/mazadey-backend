@@ -1,7 +1,6 @@
 const validatePhoneNumber = require('validate-phone-number-node-js');
 // const accountSid = process.env.TWILIO_ACCOUNT_SID;
 // const authToken = process.env.TWILIO_AUTH_TOKEN;
-const Member = require("../../models/Member");
 const axios = require("axios");
 var FormData = require('form-data');
 
@@ -25,9 +24,9 @@ exports.sendOTP = async(req, res) => {
                 "Content-Type": "multipart/form-data;"
             },
         });
-        console.log("response.data..",response.data)
+        // console.log("response.data..",response.data)
         const result = await response.data
-        console.log("result..",result)
+        // console.log("result..",result)
 
         if(result.result!=="success"){
             throw new Error(result.message)

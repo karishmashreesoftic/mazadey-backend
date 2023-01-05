@@ -1,10 +1,8 @@
 const Member =  require('../../models/Member')
-const {sendOTP, verifyOTP} = require('./otpController')
+// const {sendOTP, verifyOTP} = require('./otpController')
 const validator = require("validator")
 const validatePhoneNumber = require('validate-phone-number-node-js')
-const connection = require("../../db")
-const uniqid = require('uniqid')
-const bcrypt = require('bcryptjs')
+// const connection = require("../../db")
 const Token = require('../../models/Token')
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
@@ -12,8 +10,8 @@ const fs = require("fs")
 var FormData = require('form-data');
 exports.signup = async(req, res) => {
     try{
-        console.log("in controller.....")
-        console.log("req.file...",req.file)
+        // console.log("in controller.....")
+        // console.log("req.file...",req.file)
         // console.log('req.body...',req.body)
         const {firstname, lastname, mobile, email, password, code} = req.body
 
@@ -42,14 +40,7 @@ exports.signup = async(req, res) => {
             throw new Error("It is mandatory to upload qid")
         }
 
-        // m = await Member.findOne({where: {email}})
-        // if(m){
-        //     throw new Error(`Email address is already associated with other account.`)
-        // }
-        // console.log("m...",m)
-
-        const authtoken = "tomasz@innovationnomads.com:s9TGktXDBM";
-        const encodedToken = Buffer.from(authtoken).toString('base64');
+        const encodedToken = Buffer.from(`${process.env.WP_ADMIN_USERNAME}:${process.env.WP_ADMIN_PASSWORD}`).toString('base64');
         // console.log("req.file...",req.file)
 
         const ufile = fs.createReadStream(req.file.path)
@@ -114,7 +105,7 @@ exports.signup = async(req, res) => {
         }else{
             m = error.message
         }
-        console.log("error.exception...",m)
+        console.log("error.message...",m)
         res.send({message: m})
     }   
 }

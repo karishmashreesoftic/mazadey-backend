@@ -1,178 +1,69 @@
-const Bid = require("../../models/Bid")
-const Documents = require("../../models/Documents")
-const Member = require("../../models/Member")
-const Photos = require("../../models/Photos")
-const Product = require("../../models/Product")
-const Wishlist = require("../../models/Wishlist")
+const axios = require('axios');
+const Member = require("../../models/Member");
 
-
-exports.getSingleAd = async(req,res) =>{
+exports.getSingleProduct = async(req,res) =>{
     try{
 
-        const ad = await Product.findOne({
-            where: {
-                _id : req.params.id,
-                type:"ad"
-            },
-            include: [
-                {
-                    model: Photos,
-                    as: "photos",
-                    attributes: ['ppath']
-                },
-                {
-                    model: Documents,
-                    as: "documents",
-                    attributes: ['dpath']
-                }
-            ],
-            attributes:["_id", "title", "description", "mobile", "email", "price"],
-            raw: true,
-            nest: true
+        if(req.member.status==="pending"){
+            throw new Error("Your account is pending for activation. You will able to see items once your account is active.")
+        }
+
+        const encodedToken = Buffer.from(`${process.env.WP_ADMIN_USERNAME}:${process.env.WP_ADMIN_PASSWORD}`).toString('base64');
+
+        const itemresponse = await axios.get(`https://mzadey.com/wp-json/yith-proteo-child/v1/getsingleproduct?include=${req.params.id}`,{
+            headers: {
+                "Accept-Encoding": "gzip,deflate,compress"
+            }
         })
+        let item = await itemresponse.data
+        item = item.data.product_detail[0] 
+        let final = {}
 
-        if(!ad){
-            throw new Error("No Ad Present")
-        }
-
-        const w = await Wishlist.findAll({
-            where: {
-                MemberID: req.member._id
-            },
-        })
-
-        let wishlist = []
-        for(let i in w){
-            wishlist.push(w[i].ProductId)
-        }
-
-
-        var tempad;
-        if(wishlist.includes(ad._id)){
-            tempad = {...ad, "wishlisted": true}
-        }else{
-            tempad = {...ad, "wishlisted": false}
-        }
-      
-        res.status(201).send(tempad)
-
-    }catch(error){
-        res.send({message: error.message})
-    }   
-}
-
-exports.getSingleAuction = async(req,res) =>{
-    try{
-        const auction = await Product.findOne({
-            where: {
-                _id : req.params.id,
-                type:"auction"
-            },
-            include: [
-                {
-                    model: Photos,
-                    as: "photos",
-                    attributes: ['ppath']
-                },
-                {
-                    model: Documents,
-                    as: "documents",
-                    attributes: ['dpath']
-                },
-            ],
-            attributes:["_id", "title", "description", "mobile", "email", "minbid"],
-            raw: true,
-            nest: true
-        })
-
-        if(!auction){
-            throw new Error("No Auction Present")
-        }
-
-        const bids = await Bid.findAll(
-            {
-                where: {
-                    auction: req.params.id
-                },
-                include: [
-                    {
-                        model: Member,
-                        as:"bidplacedby",
-                        attributes: ["_id", "fullname"],
+        if(item.auction_starting_price){
+            let c = []
+            let bids = []
+            const b = item.bidding_list
+            if(b.length>0){
+                for(let i=0; i< b.length; i++){
+                    const user = await Member.findByPk(b[i].user_id)
+                    if(user){
+                        let t = {
+                            ...b[i],
+                            name: user.fullname
+                        }
+                        bids.push(t)
                     }
-                ],
-                order: [
-                    ['amount', 'DESC'],
-                ],
-                attributes:["_id","amount"],
-                raw: true,
-                nest: true
+                }
             }
-        )
-
-        const w = await Wishlist.findAll({
-            where: {
-                MemberID: req.member._id
-            },
-        })
-
-        let wishlist = []
-        for(let i in w){
-            wishlist.push(w[i].ProductId)
-        }
-
-        var tempauction;
-        if(wishlist.includes(auction._id)){
-            tempauction = {...auction, "bids": bids, "wishlisted": true}
+            for(let j=0; j<item.category_list.length; j++){
+                let tc = item.category_list[j]
+                if(tc.name){
+                    c.push(tc.name)
+                }
+            }
+            final = {
+                ...item,
+                category_list: c,
+                bidding_list: bids
+            }
         }else{
-            tempauction = {...auction, "bids": bids, "wishlisted": false}
+            let c = []
+            for(let j=0; j<item.category_list.length; j++){
+                let tc = item.category_list[j]
+                if(tc.name){
+                    c.push(tc.name)
+                }
+            }
+            final = {
+                ...item,
+                category_list: c
+            }
         }
 
-        res.status(201).send({
-            auction: tempauction,
-            biddescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis"
-        })
+        res.status(200).send(final)
 
     }catch(error){
-        res.send({message: error.message})
-    }   
-}
-
-exports.getMyAuction = async(req,res) =>{
-    try{    
-        if(req.member.membertype==="seller"){
-
-            const auction = await Product.findOne({
-                where: {
-                    _id : req.params.id,
-                    type:"auction"
-                },
-                include: [
-                    {
-                        model: Photos,
-                        as: "photos",
-                        attributes: ['ppath']
-                    },
-                    {
-                        model: Documents,
-                        as: "documents",
-                        attributes: ['dpath']
-                    },
-                ],
-                attributes:["_id", "title", "description"],
-                raw: true,
-                nest: true
-            })
-
-            if(!auction){
-                throw new Error("No Auction Present")
-            }
-            res.status(201).send(auction)
-        }else{
-            throw new Error("Only sellers can perform this action.")
-        }
-
-    }catch(error){
+        console.log("error...",error.message)
         res.send({message: error.message})
     }   
 }

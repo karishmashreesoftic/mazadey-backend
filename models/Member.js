@@ -1,10 +1,5 @@
-const { Sequelize, DataTypes } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const sequelize = require('../db');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const Token = require("./Token");
-const Qid = require("./Qid");
-const Bid = require("./Bid");
 
 const Member = sequelize.define('MZ_MEMBERS',{
 

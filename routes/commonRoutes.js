@@ -4,20 +4,13 @@ const { logout, logoutAll } = require("../controllers/signin/logoutController");
 const { signup } = require("../controllers/signin/signupController");
 const { sendOTP } = require("../controllers/signin/otpController");
 const { login } = require("../controllers/signin/loginController");
-// const { sendToEmail, verifyEmailCode } = require("../controllers/password/emailCodeController");
 const upload = require("../utils/multer");
-// const { uploadQid } = require("../controllers/qidController");
-// const { getSingleAd, getSingleAuction } = require("../controllers/product/getSingleProductConttroller");
-// const { getMaxBid } = require("../controllers/bidsController");
-// const { getProfile, editProfile } = require("../controllers/memberProfileController");
 // const { changePassword } = require("../controllers/password/changePasswordController");
-const { getProducts, getAuctions, getSingleProduct } = require("../controllers/product/getProductsController");
 const { checkRole } = require("../controllers/roleController");
-// const { createPassword } = require("../controllers/password/createNewPasswordController");
-// const { deleteAccount } = require("../controllers/deleteAccountController");
-// const { getFAQ } = require("../controllers/getFAQ");
-// const { contactUs } = require("../controllers/contactUsController");
-// const upload = require("../utils/multer");
+const { createAd } = require("../controllers/product/createAdController");
+const { getAuctions } = require("../controllers/product/getAuctionsController");
+const { getSingleProduct } = require("../controllers/product/getSingleProductConttroller");
+const { getProducts } = require("../controllers/product/getProductsController");
 
 const commonRouter = Router()
 
@@ -28,43 +21,20 @@ commonRouter.get("/", (req,res)=>{
 
 commonRouter.post("/sendotp", sendOTP)
 commonRouter.post("/signup", upload.single("qid"), signup)
-// commonRouter.post("/checkdata", async (req,res) => {
-//     console.log("req.body...",req.body)
-//     console.log("req.headers...",req.headers)
-// })
-
 commonRouter.post("/login", login)
 
-// commonRouter.post("/sendemailcode", sendToEmail)
-// commonRouter.post("/verifyemailcode", verifyEmailCode)
-
-// commonRouter.post("/uploadqid", auth, upload.single("qid"), uploadQid)
-
-// commonRouter.get("/getad/:id", auth, getSingleAd)
-// commonRouter.get("/getauction/:id", auth, getSingleAuction)
-// commonRouter.get("/getmaxbid/:id", auth, getMaxBid)
 
 commonRouter.post("/getallauctions", auth, getAuctions)
 commonRouter.post("/getallproducts", auth, getProducts)
 commonRouter.get("/getitem/:id", auth, getSingleProduct)
 commonRouter.get("/setrole", auth, checkRole)
 
-// commonRouter.post("/addbalance", auth)
-// commonRouter.post("/withdrawbalance", auth)
+
+commonRouter.post("/createad", upload.array('photos'), createAd)
+
 
 commonRouter.get("/logout", auth, logout)
 commonRouter.get("/logoutall", auth, logoutAll)
 
-// commonRouter.delete("/deleteaccount", auth, deleteAccount)
-
-// commonRouter.get("/getprofile", auth, getProfile)
-// commonRouter.post("/editprofile", auth, editProfile)
-
-// commonRouter.post("/changepassword", auth, changePassword)
-// commonRouter.post("/createnewpassword", createPassword)
-
-// commonRouter.get("/getfaq", auth, getFAQ)
-
-// commonRouter.post("/contactus", auth, contactUs)
 
 module.exports = commonRouter;

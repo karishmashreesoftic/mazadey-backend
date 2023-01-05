@@ -1,12 +1,5 @@
 const Member = require("./models/Member");
 const Token = require("./models/Token");
-// const Qid = require("./models/Qid");
-// const Bid = require("./models/Bid");
-// const Product = require("./models/Product");
-// const Documents = require("./models/Documents");
-// const Photos = require("./models/Photos");
-// const Wishlist = require("./models/Wishlist");
-// const ContactUs = require("./models/ContactUs");
 
 
 Member.hasMany(Token, {foreignKey: "member", as: "tokens"})

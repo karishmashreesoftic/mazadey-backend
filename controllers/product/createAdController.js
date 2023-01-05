@@ -1,9 +1,5 @@
-const Product = require("../../models/Product")
 const validatePhoneNumber = require('validate-phone-number-node-js');
-const crypto = require("crypto");
 const validator = require("validator");
-const Photos = require("../../models/Photos");
-const Documents = require("../../models/Documents");
 var FormData = require('form-data');
 const axios = require('axios');
 const fs = require("fs")
@@ -24,8 +20,7 @@ exports.createAd = async(req, res) => {
             }
         } 
 
-        const authtoken = "tomasz@innovationnomads.com:s9TGktXDBM";
-        const encodedToken = Buffer.from(authtoken).toString('base64');
+        const encodedToken = Buffer.from(`${process.env.WP_ADMIN_USERNAME}:${process.env.WP_ADMIN_PASSWORD}`).toString('base64');
         let photos = []
         let photosurl = []
 
@@ -118,7 +113,7 @@ exports.createAd = async(req, res) => {
         }else{
             m = error.message
         }
-        console.log("error.exception...",m)
+        console.log("error...",m)
         res.send({message: m})
     }
 }

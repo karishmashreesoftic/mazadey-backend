@@ -1,12 +1,3 @@
-const mysql = require('mysql2');
-
-    // var connection = mysql.createConnection({
-    //     host: 'localhost',
-    //     user: 'root',
-    //     password: 'Ss@12345',
-    //     database: 'test',
-    // });
-
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize(
@@ -40,24 +31,6 @@ sequelize.sync({ force: false }).then(() => {
 }).catch((error) => {
     console.error('Unable to connect to the database : ', error);
 });
-
-
-    // var connection = mysql.createConnection({
-    //     host: process.env.MYSQL_HOST,
-    //     user: process.env.MYSQL_USER,
-    //     password: process.env.MYSQL_PASSWORD,
-    //     database: process.env.MYSQL_DB,
-    //     multipleStatements: true
-    // });
-    
-    // connection.connect(function (err) {
-    //     console.log('DB Connecting...');
-    //     if (err) {
-    //         console.error('Error in Connecting : ' + err.stack);
-    //     }
-
-    //     console.log('DB Connected as Id :- ' + connection.threadId);
-    // });
 
 
 module.exports = sequelize;

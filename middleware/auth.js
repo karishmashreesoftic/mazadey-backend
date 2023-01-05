@@ -1,9 +1,5 @@
 const jwt = require('jsonwebtoken');
 const Member = require("../models/Member");
-const Photos = require('../models/Photos');
-const Product = require('../models/Product');
-const Wishlist = require('../models/Wishlist');
-//const Admin = require('../models/Admin');
 
 exports.auth = async (req, res, next) => {
     try{
@@ -22,7 +18,7 @@ exports.auth = async (req, res, next) => {
         next()
         
     }catch(e){
-        console.log("-========================",e.message)
+        console.log("error.message...",e.message)
         res.status(401).send({message: "Please authenticate...!!!"})
     }
 }

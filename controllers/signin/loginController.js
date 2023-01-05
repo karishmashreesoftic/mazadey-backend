@@ -2,7 +2,6 @@ const Member =  require('../../models/Member')
 const jwt = require('jsonwebtoken');
 const Token = require('../../models/Token');
 const axios = require("axios");
-const Qid = require('../../models/Qid');
 
 exports.login = async(req,res) =>{
     try{
@@ -19,8 +18,7 @@ exports.login = async(req,res) =>{
         const data = await response.data
         // console.log("data..",data)
 
-        const authtoken = "tomasz@innovationnomads.com:s9TGktXDBM";
-        const encodedToken = Buffer.from(authtoken).toString('base64');
+        const encodedToken = Buffer.from(`${process.env.WP_ADMIN_USERNAME}:${process.env.WP_ADMIN_PASSWORD}`).toString('base64');
 
         const userrole = await axios.get("https://mzadey.com/wp-json/wp/v2/users/2?context=edit",{
             headers: {
@@ -44,7 +42,7 @@ exports.login = async(req,res) =>{
 
         res.status(201).send({member, token: newToken.token, message: "Login Successful"})
     }catch(error){
-        console.log("catch",error.message)
+        console.log("error...",error.message)
         let msg = error.message;
         if(error.response && error.response.data.reason){
             msg = "There is no account with given email address or password is incorrect."
