@@ -18,7 +18,10 @@ exports.createAd = async(req, res) => {
             }else if(!validatePhoneNumber.validate(req.body.mobile)){
                 throw new Error("Enter a valid Mobile Number");  
             }
-        } 
+        }
+        if(req.files.length===0){
+            throw new Error("Please select photos to upload")
+        }
 
         const encodedToken = Buffer.from(`${process.env.WP_ADMIN_USERNAME}:${process.env.WP_ADMIN_PASSWORD}`).toString('base64');
         let photos = []
@@ -61,7 +64,7 @@ exports.createAd = async(req, res) => {
         productdata.append("item_meta[68]", req.body.email) //Email
         productdata.append("item_meta[69]", req.body.mobile) //Mobile
         // productdata.append("item_meta[71]", req.body.otp) //OTP
-
+        console.log("photos...",photos)
         for(let i=0; i<photos.length; i++){
             productdata.append("item_meta[46][]", photos[i]) //Photos
         }
@@ -108,7 +111,7 @@ exports.createAd = async(req, res) => {
 
     }catch(error){
         let m;
-        if(error.response.data.code==="frmapi_validate_entry"){
+        if(error.response && error.response.data.code==="frmapi_validate_entry"){
             m = Object.values(error.response.data.message)
         }else{
             m = error.message
