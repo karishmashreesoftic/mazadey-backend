@@ -13,6 +13,11 @@ const { getSingleProduct } = require("../controllers/product/getSingleProductCon
 const { getProducts } = require("../controllers/product/getProductsController");
 const { getWishlist } = require("../controllers/wishlist/getWishlistController");
 const { setLang, getLang } = require("../controllers/languageController");
+const { addToWishlist, removeFromWishlist } = require("../controllers/wishlist/updateWishlistController");
+const { getWatchlist } = require("../controllers/watchlist/getWatchlistController");
+const { addToWatchlist, removeFromWatchlist } = require("../controllers/watchlist/updateWatchlistController");
+const { getCategorylist } = require("../controllers/categoryController");
+const { placeBid, getMyBid } = require("../controllers/bidController");
 
 const commonRouter = Router()
 
@@ -30,6 +35,17 @@ commonRouter.post("/getallproducts", auth, getProducts)
 commonRouter.get("/getitem/:id", auth, getSingleProduct)
 
 commonRouter.get("/getwishlist", auth, getWishlist)
+commonRouter.post("/addtowishlist", auth, addToWishlist)
+commonRouter.get("/removefromwishlist/:id", auth, removeFromWishlist)
+
+commonRouter.get("/getwatchlist", auth, getWatchlist) //PENDING
+commonRouter.get("/addtowatchlist", auth, addToWatchlist) //PENDING
+commonRouter.get("/removefromwatchlist", auth, removeFromWatchlist) //PENDING
+
+commonRouter.get("/categorylist", auth, getCategorylist) //PENDING
+
+commonRouter.post("/placebid", auth, placeBid) //PENDING
+commonRouter.get("/getmybids", auth, getMyBid) //PENDING
 
 commonRouter.get("/setrole", auth, checkRole)
 commonRouter.post("/createad", upload.array('photos'), createAd)
