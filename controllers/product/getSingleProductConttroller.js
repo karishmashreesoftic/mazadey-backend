@@ -1,11 +1,12 @@
 const axios = require('axios');
 const Member = require("../../models/Member");
+const i18next = require("../../utils/i18")
 
 exports.getSingleProduct = async(req,res) =>{
     try{
 
         if(req.member.status==="pending"){
-            throw new Error("Your account is pending for activation. You will able to see items once your account is active.")
+            throw new Error(i18next.t("pendingForActivation", {lng: req.member.applanguage}))
         }
 
         const encodedToken = Buffer.from(`${process.env.WP_ADMIN_USERNAME}:${process.env.WP_ADMIN_PASSWORD}`).toString('base64');
@@ -41,10 +42,15 @@ exports.getSingleProduct = async(req,res) =>{
                     c.push(tc.name)
                 }
             }
+            let flag = false
+            if(req.wishlist.includes(item.ID)){
+                flag = true
+            }
             final = {
                 ...item,
                 category_list: c,
-                bidding_list: bids
+                bidding_list: bids,
+                wishlist: flag
             }
         }else{
             let c = []
@@ -54,9 +60,14 @@ exports.getSingleProduct = async(req,res) =>{
                     c.push(tc.name)
                 }
             }
+            let flag = false
+            if(req.wishlist.includes(item.ID)){
+                flag = true
+            }
             final = {
                 ...item,
-                category_list: c
+                category_list: c,
+                wishlist: flag
             }
         }
 

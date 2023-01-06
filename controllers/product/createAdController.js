@@ -3,24 +3,25 @@ const validator = require("validator");
 var FormData = require('form-data');
 const axios = require('axios');
 const fs = require("fs")
+const i18next = require("../../utils/i18")
 
 exports.createAd = async(req, res) => {
     try{
 
         if(req.body.email){
             if (!validator.isEmail(req.body.email)) {
-                throw new Error("Enter a valid Email Address");
+                throw new Error(i18next.t("emailInvalid", {lng: req.member.applanguage}))
               }
         }
         if(req.body.mobile){
             if(!req.body.mobile.includes("+")){
-                throw new Error("Please enter number with '+' and country code.")
+                throw new Error(i18next.t("mobileCodeError", {lng: req.member.applanguage}))
             }else if(!validatePhoneNumber.validate(req.body.mobile)){
-                throw new Error("Enter a valid Mobile Number");  
+                throw new Error(i18next.t("mobileInvalid", {lng: req.member.applanguage}))
             }
         }
         if(req.files.length===0){
-            throw new Error("Please select photos to upload")
+            throw new Error(i18next.t("noPhotosSelected", {lng: req.member.applanguage}))
         }
 
         const encodedToken = Buffer.from(`${process.env.WP_ADMIN_USERNAME}:${process.env.WP_ADMIN_PASSWORD}`).toString('base64');

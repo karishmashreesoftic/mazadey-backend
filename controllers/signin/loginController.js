@@ -42,11 +42,11 @@ exports.login = async(req,res) =>{
 
         res.status(201).send({member, token: newToken.token, message: "Login Successful"})
     }catch(error){
-        console.log("error...",error.message)
         let msg = error.message;
         if(error.response && error.response.data.reason){
-            msg = "There is no account with given email address or password is incorrect."
+            msg = error.response.data.reason
         }
+        console.log("error...",msg)
         res.send({message: msg})
     }   
 }

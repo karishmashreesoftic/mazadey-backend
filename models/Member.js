@@ -48,15 +48,19 @@ const Member = sequelize.define('MZ_MEMBERS',{
         type: DataTypes.INTEGER, 
         defaultValue: 0
     },
+    applanguage:{
+        type: DataTypes.STRING,
+        defaultValue: "en"
+    },
     status:{ type: DataTypes.STRING, defaultValue: "pending" },
 })
 
 // Member.beforeCreate(async (member, options) => {
 
-//     // console.log("beforeCreate...",member)
+    // console.log("beforeCreate...",member)
 
 //     member.password = await bcrypt.hash(member.password, 8);
-//     // console.log("after..",member)
+    // console.log("after..",member)
 
 // });
 

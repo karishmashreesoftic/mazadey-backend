@@ -1,0 +1,10 @@
+{
+    "mobileCodeError": "Please enter number with '+' and country code.",
+    "mobileInvalid": "Enter a valid Mobile Number",
+    "emailInvalid": "Email Id is not valid",
+    "qidMandatory": "It is mandatory to upload Qatara Id",
+
+    "pendingForActivation": "Your account is pending for activation. You will able to see items once your account is active.",
+
+    "noPhotosSelected": "Please select photos to upload"
+}

@@ -8,12 +8,14 @@ const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const fs = require("fs")
 var FormData = require('form-data');
+const i18next = require("../../utils/i18")
+
 exports.signup = async(req, res) => {
     try{
         // console.log("in controller.....")
         // console.log("req.file...",req.file)
         // console.log('req.body...',req.body)
-        const {firstname, lastname, mobile, email, password, code} = req.body
+        const {firstname, lastname, mobile, email, password, code, language} = req.body
 
         // if(fullname){
         //     if(!fullname.trim().length){
@@ -25,19 +27,19 @@ exports.signup = async(req, res) => {
 
         if(mobile){
             if(!mobile.includes("+")){
-                throw new Error("Please enter number with '+' and country code.")
+                throw new Error(i18next.t("mobileCodeError", {lng: language}))
             }else if(!validatePhoneNumber.validate(mobile)){
-                throw new Error("Enter a valid Mobile Number");  
+                throw new Error(i18next.t("mobileInvalid", {lng: language}))
             }
         }   
         if(email){
             if(!validator.isEmail(email)) {
-                throw new Error("Email Id is not valid")
+                throw new Error(i18next.t("emailInvalid", {lng: language}))
             }
         }
 
         if(req.file===undefined){
-            throw new Error("It is mandatory to upload qid")
+            throw new Error(i18next.t("qidMandatory", {lng: language}))
         }
 
         const encodedToken = Buffer.from(`${process.env.WP_ADMIN_USERNAME}:${process.env.WP_ADMIN_PASSWORD}`).toString('base64');
@@ -105,7 +107,7 @@ exports.signup = async(req, res) => {
         }else{
             m = error.message
         }
-        console.log("error.message...",m)
+        console.log("error...",m)
         res.send({message: m})
     }   
 }

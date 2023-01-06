@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Member = require("../models/Member");
+const axios = require('axios');
 
 exports.auth = async (req, res, next) => {
     try{
@@ -11,6 +12,31 @@ exports.auth = async (req, res, next) => {
         member = await Member.findByPk(decoded._id)
         if(!member){
             throw new Error()
+        }
+
+        let routes = [
+            "getallauctions",
+            "getallproducts",
+            "getitem"
+        ]
+
+        if(routes.includes(req.originalUrl.split("/")[1])){
+            const encodedToken = Buffer.from(`${process.env.WP_ADMIN_USERNAME}:${process.env.WP_ADMIN_PASSWORD}`).toString('base64');
+            const itemresponse = await axios.get(`https://mzadey.com/wp-json/yith-proteo-child/v1/getallwishlist?user_id=${member._id}`,{
+                headers: {
+                    "Accept-Encoding": "gzip,deflate,compress"
+                }
+            })
+            let items = await itemresponse.data
+            items = items.data.wishlist
+            let ids = [];
+            if(items){
+                for(let i=0; i<items.length; i++){
+                    ids.push(items[i].ID)
+                }
+            }
+
+            req.wishlist = ids
         }
 
         req.token = token
