@@ -17,7 +17,8 @@ exports.auth = async (req, res, next) => {
         let routes = [
             "getallauctions",
             "getallproducts",
-            "getitem"
+            "getitem",
+            "getmybids"
         ]
 
         if(routes.includes(req.originalUrl.split("/")[1])){

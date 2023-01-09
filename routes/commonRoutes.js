@@ -44,8 +44,8 @@ commonRouter.get("/removefromwatchlist", auth, removeFromWatchlist) //PENDING
 
 commonRouter.get("/categorylist", auth, getCategorylist) //PENDING
 
-commonRouter.post("/placebid", auth, placeBid) //PENDING
-commonRouter.get("/getmybids", auth, getMyBid) //PENDING
+commonRouter.post("/placebid", auth, placeBid)
+commonRouter.get("/getmybids", auth, getMyBid)
 
 commonRouter.get("/setrole", auth, checkRole)
 commonRouter.post("/createad", upload.array('photos'), createAd)
