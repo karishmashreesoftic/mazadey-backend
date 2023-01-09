@@ -102,7 +102,7 @@ exports.signup = async(req, res) => {
 
     }catch(error){
         let m;
-        if(error.response.data.code==="frmapi_validate_entry"){
+        if(error.response && error.response.data.code==="frmapi_validate_entry"){
             m = Object.values(error.response.data.message)
         }else{
             m = error.message
