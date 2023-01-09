@@ -18,6 +18,7 @@ const { getWatchlist } = require("../controllers/watchlist/getWatchlistControlle
 const { addToWatchlist, removeFromWatchlist } = require("../controllers/watchlist/updateWatchlistController");
 const { getCategorylist } = require("../controllers/categoryController");
 const { placeBid, getMyBid } = require("../controllers/bidController");
+const { changePassword, forgotPassword } = require("../controllers/passwordController");
 
 const commonRouter = Router()
 
@@ -52,6 +53,9 @@ commonRouter.post("/createad", upload.array('photos'), createAd)
 
 commonRouter.post("/changelanguage", auth, setLang)
 commonRouter.get("/getlanguage", auth, getLang)
+
+commonRouter.post("/changepassword", auth, changePassword)
+commonRouter.get("/forgotpassword/:email", forgotPassword)
 
 commonRouter.get("/logout", auth, logout)
 commonRouter.get("/logoutall", auth, logoutAll)
