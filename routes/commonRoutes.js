@@ -39,9 +39,9 @@ commonRouter.get("/getwishlist", auth, getWishlist)
 commonRouter.post("/addtowishlist", auth, addToWishlist)
 commonRouter.get("/removefromwishlist/:id", auth, removeFromWishlist)
 
-commonRouter.get("/getwatchlist", auth, getWatchlist) //PENDING
-commonRouter.get("/addtowatchlist", auth, addToWatchlist) //PENDING
-commonRouter.get("/removefromwatchlist", auth, removeFromWatchlist) //PENDING
+commonRouter.get("/getwatchlist", auth, getWatchlist)
+commonRouter.post("/addtowatchlist", auth, addToWatchlist)
+commonRouter.get("/removefromwatchlist/:id", auth, removeFromWatchlist)
 
 commonRouter.get("/categorylist", auth, getCategorylist) //PENDING
 
