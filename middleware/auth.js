@@ -25,7 +25,7 @@ exports.auth = async (req, res, next) => {
             const encodedToken = Buffer.from(`${process.env.WP_ADMIN_USERNAME}:${process.env.WP_ADMIN_PASSWORD}`).toString('base64');
             const itemresponse = await axios.get(`https://mzadey.com/wp-json/yith-proteo-child/v1/getallwishlist?user_id=${member._id}`,{
                 headers: {
-                    "Accept-Encoding": "gzip,deflate,compress"
+                    "Accept-Encoding": "gzip,deflate,compress",
                 }
             })
             let items = await itemresponse.data
@@ -45,7 +45,7 @@ exports.auth = async (req, res, next) => {
         next()
         
     }catch(e){
-        console.log("error.message...",e.message)
+        console.log("error.message...",e.response)
         res.status(401).send({message: "Please authenticate...!!!"})
     }
 }

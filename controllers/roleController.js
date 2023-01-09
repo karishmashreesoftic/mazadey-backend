@@ -6,7 +6,7 @@ exports.checkRole = async(req,res) =>{
 
         const encodedToken = Buffer.from(`${process.env.WP_ADMIN_USERNAME}:${process.env.WP_ADMIN_PASSWORD}`).toString('base64');
 
-        const userrole = await axios.get("https://mzadey.com/wp-json/wp/v2/users/2?context=edit",{
+        const userrole = await axios.get(`https://mzadey.com/wp-json/wp/v2/users/${req.member._id}?context=edit`,{
             headers: {
                 'Authorization': 'Basic '+ encodedToken,
                 "Accept-Encoding": "gzip,deflate,compress"
@@ -14,8 +14,9 @@ exports.checkRole = async(req,res) =>{
         })
 
         const roles = await userrole.data.roles
-
+        console.log("roles...",roles)
         if(roles.includes("registered_user")){
+            console.log("f")
             await Member.update(
                 {status: "registered"},
                 {where:{_id: req.member._id}}
