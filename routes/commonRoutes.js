@@ -43,7 +43,7 @@ commonRouter.get("/getwatchlist", auth, getWatchlist)
 commonRouter.post("/addtowatchlist", auth, addToWatchlist)
 commonRouter.get("/removefromwatchlist/:id", auth, removeFromWatchlist)
 
-commonRouter.get("/categorylist", auth, getCategorylist) //PENDING
+commonRouter.get("/categorylist", auth, getCategorylist)
 
 commonRouter.post("/placebid", auth, placeBid)
 commonRouter.get("/getmybids", auth, getMyBid)
