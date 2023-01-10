@@ -25,8 +25,13 @@ exports.login = async(req,res) =>{
         res.status(201).send({member, token: newToken.token, message: "Login Successful"})
     }catch(error){
         let msg = error.message;
+        console.log("ERROR...",error.response.data)
         if(error.response && error.response.data.reason){
-            msg = error.response.data.reason
+            if(error.response.data.code==="incorrect_password"){
+                msg = "The password you entered is incorrect"
+            }else{
+                msg = error.response.data.reason
+            }  
         }
         console.log("error...",msg)
         res.send({message: msg})
