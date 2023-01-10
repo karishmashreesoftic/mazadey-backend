@@ -19,17 +19,21 @@ const { addToWatchlist, removeFromWatchlist } = require("../controllers/watchlis
 const { getCategorylist } = require("../controllers/categoryController");
 const { placeBid, getMyBid } = require("../controllers/bidController");
 const { changePassword, forgotPassword } = require("../controllers/passwordController");
+const { getCartDetail } = require("../controllers/cart/getCartController");
 
 const commonRouter = Router()
 
-commonRouter.get("/", (req,res)=>{
-    res.send('Mzadey Backend')
-})
 
+
+commonRouter.get("/", (req, res) => { res.send('Mzadey Backend') })
 
 commonRouter.post("/sendotp", sendOTP)
 commonRouter.post("/signup", upload.single("qid"), signup)
 commonRouter.post("/login", login)
+
+commonRouter.get("/categorylist", auth, getCategorylist)
+commonRouter.get("/setrole", auth, checkRole)
+commonRouter.post("/createad", upload.array('photos'), createAd)
 
 commonRouter.post("/getallauctions", auth, getAuctions)
 commonRouter.post("/getallproducts", auth, getProducts)
@@ -43,13 +47,12 @@ commonRouter.get("/getwatchlist", auth, getWatchlist)
 commonRouter.post("/addtowatchlist", auth, addToWatchlist)
 commonRouter.get("/removefromwatchlist/:id", auth, removeFromWatchlist)
 
-commonRouter.get("/categorylist", auth, getCategorylist)
-
 commonRouter.post("/placebid", auth, placeBid)
 commonRouter.get("/getmybids", auth, getMyBid)
 
-commonRouter.get("/setrole", auth, checkRole)
-commonRouter.post("/createad", upload.array('photos'), createAd)
+commonRouter.get("/getcartdetail", auth, getCartDetail)
+commonRouter.get("/addtocart", auth) //PENDING
+commonRouter.get("/removefromcart", auth) //PENDING
 
 commonRouter.post("/changelanguage", auth, setLang)
 commonRouter.get("/getlanguage", auth, getLang)
