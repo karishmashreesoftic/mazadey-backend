@@ -33,7 +33,7 @@ exports.auth = async (req, res, next) => {
             let ids = [];
             if(items){
                 for(let i=0; i<items.length; i++){
-                    ids.push(items[i].ID)
+                    ids.push(Number(items[i].ID))
                 }
             }
 

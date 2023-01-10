@@ -50,7 +50,8 @@ exports.getSingleProduct = async(req,res) =>{
                 ...item,
                 category_list: c,
                 bidding_list: bids,
-                wishlist: flag
+                wishlist: flag,
+                message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis,"
             }
         }else{
             let c = []

@@ -21,7 +21,9 @@ exports.getWishlist = async(req,res) =>{
 
         let finalItems = []
 
-        if(items){
+        if(items[0].message){
+            throw new Error("No Item Found")
+        }
             for(let i=0; i<items.length; i++){
 
                 let item = items[i]
@@ -53,6 +55,7 @@ exports.getWishlist = async(req,res) =>{
     
                     final = {
                         ...item,
+                        type: "auction",
                         category_list: c,
                         bidding_list: bids
                     }
@@ -69,11 +72,11 @@ exports.getWishlist = async(req,res) =>{
                     }
                     final = {
                         ...item,
+                        type: "ad",
                         category_list: c
                     }
                     finalItems.push(final)
                 }
-            }
     
         }
 
