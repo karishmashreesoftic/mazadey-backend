@@ -18,10 +18,7 @@ exports.getAuctions = async(req,res) =>{
 
         console.log("..........req.wishlist..........",req.wishlist)
 
-        if(req.member.status==="pending"){
-            throw new Error(i18next.t("pendingForActivation", {lng: req.member.applanguage}))
-        }
-
+       
         const itemresponse = await axios.get("https://mzadey.com/wp-json/yith-proteo-child/v1/getallauction",{
             headers: {
                 "Accept-Encoding": "gzip,deflate,compress"
@@ -32,6 +29,12 @@ exports.getAuctions = async(req,res) =>{
         // console.log("item..",items)
 
         let auctions = []
+        if(req.member.status==="pending"){
+            auctions.push({"pending":true});
+        }else{
+            auctions.push({"pending":false});
+        }
+
         if(req.body.category){
 
             for(let i=0; i<items.length; i++){
@@ -111,9 +114,17 @@ exports.getAuctions = async(req,res) =>{
                 auctions.push(t)
             }
         }
+        let a=[]
+        for(let i=1;i<auctions.length;i++){
+            a.push(auctions[i]);
+        }
+     
+        let data={
+            "pending":auctions[0].pending,
+            "auctions":a
+        }
 
-
-        res.status(201).send(auctions)
+        res.status(201).send(data)
 
     }catch(error){
         console.log("error...",error.message)

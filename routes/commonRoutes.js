@@ -50,7 +50,7 @@ commonRouter.get("/removefromwatchlist/:id", auth, removeFromWatchlist)
 commonRouter.post("/placebid", auth, placeBid)
 commonRouter.get("/getmybids", auth, getMyBid)
 
-commonRouter.get("/getcartdetail", auth, getCartDetail)
+commonRouter.get("/getcartdetail", auth, getCartDetail) //It is live but below 2 APIs needed for testing
 commonRouter.get("/addtocart", auth) //PENDING
 commonRouter.get("/removefromcart", auth) //PENDING
 
