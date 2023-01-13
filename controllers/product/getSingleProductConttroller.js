@@ -5,9 +5,7 @@ const i18next = require("../../utils/i18")
 exports.getSingleProduct = async(req,res) =>{
     try{
 
-        // if(req.member.status==="pending"){
-        //     throw new Error(i18next.t("pendingForActivation", {lng: req.member.applanguage}))
-        // }
+       
 
         const encodedToken = Buffer.from(`${process.env.WP_ADMIN_USERNAME}:${process.env.WP_ADMIN_PASSWORD}`).toString('base64');
 
@@ -19,7 +17,12 @@ exports.getSingleProduct = async(req,res) =>{
         let item = await itemresponse.data
         item = item.data.product_detail[0] 
         // console.log(item);
-       
+        let status = []
+        if(req.member.status==="pending"){
+            status.push({"pending":true});
+        }else{
+            status.push({"pending":false});
+        }
        
         let final = {}
 
@@ -76,6 +79,12 @@ exports.getSingleProduct = async(req,res) =>{
                 wishlist: flag
             }
         }
+        
+     
+        // let data={
+        //     "pending":status[0].pending,
+        //     "auctions":final
+        // }
 
         res.status(200).send(final)
 
