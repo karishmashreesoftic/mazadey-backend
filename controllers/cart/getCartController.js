@@ -11,7 +11,7 @@ exports.getCartDetail = async(req,res) =>{
         let cart = await response.data
         cart = cart.data.response
 
-        console.log("cart...",cart)
+        // console.log("cart...",cart)
 
         let finalCart = []
         let total = 0

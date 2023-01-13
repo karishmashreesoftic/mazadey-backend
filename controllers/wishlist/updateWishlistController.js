@@ -9,7 +9,7 @@ exports.addToWishlist = async(req,res) =>{
             }
         })
         let wishlist = await wishlistres.data
-        console.log("wishlist..",wishlist)
+        // console.log("wishlist..",wishlist)
 
         res.status(201).send({message: wishlist})
 
@@ -27,7 +27,7 @@ exports.removeFromWishlist = async(req,res) =>{
             }
         })
         let wishlist = await wishlistres.data
-        console.log("wishlist..",wishlist)
+        // console.log("wishlist..",wishlist)
 
         res.status(201).send({message: wishlist})
 

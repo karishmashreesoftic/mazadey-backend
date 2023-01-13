@@ -5,9 +5,9 @@ const i18next = require("../../utils/i18")
 exports.getSingleProduct = async(req,res) =>{
     try{
 
-        if(req.member.status==="pending"){
-            throw new Error(i18next.t("pendingForActivation", {lng: req.member.applanguage}))
-        }
+        // if(req.member.status==="pending"){
+        //     throw new Error(i18next.t("pendingForActivation", {lng: req.member.applanguage}))
+        // }
 
         const encodedToken = Buffer.from(`${process.env.WP_ADMIN_USERNAME}:${process.env.WP_ADMIN_PASSWORD}`).toString('base64');
 
@@ -18,6 +18,9 @@ exports.getSingleProduct = async(req,res) =>{
         })
         let item = await itemresponse.data
         item = item.data.product_detail[0] 
+        // console.log(item);
+       
+       
         let final = {}
 
         if(item.auction_starting_price){
@@ -30,8 +33,10 @@ exports.getSingleProduct = async(req,res) =>{
                     if(user){
                         let t = {
                             ...b[i],
-                            name: user.fullname
+                            name: user.fullname,
+                            
                         }
+                        
                         bids.push(t)
                     }
                 }

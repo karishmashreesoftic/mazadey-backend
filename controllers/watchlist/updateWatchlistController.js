@@ -8,7 +8,7 @@ exports.addToWatchlist = async(req,res) =>{
             }
         })
         let watchlist = await watchlistres.data
-        console.log("watchlist..",watchlist)
+        // console.log("watchlist..",watchlist)
 
         res.status(201).send({message: watchlist})
 
@@ -25,7 +25,7 @@ exports.removeFromWatchlist = async(req,res) =>{
             }
         })
         let watchlist = await watchlistres.data
-        console.log("watchlist..",watchlist)
+        // console.log("watchlist..",watchlist)
 
         res.status(201).send({message: watchlist})
         

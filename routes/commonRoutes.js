@@ -35,9 +35,9 @@ commonRouter.get("/categorylist", auth, getCategorylist)
 commonRouter.get("/setrole", auth, checkRole)
 commonRouter.post("/createad", upload.array('photos'), createAd)
 
-commonRouter.post("/getallauctions", auth, getAuctions)
+commonRouter.post("/getallauctions",auth, getAuctions)
 commonRouter.post("/getallproducts", auth, getProducts)
-commonRouter.get("/getitem/:id", auth, getSingleProduct)
+commonRouter.get("/getitem/:id",auth, getSingleProduct)
 
 commonRouter.get("/getwishlist", auth, getWishlist)
 commonRouter.post("/addtowishlist", auth, addToWishlist)

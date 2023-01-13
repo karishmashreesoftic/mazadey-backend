@@ -16,7 +16,7 @@ exports.getAuctions = async(req,res) =>{
 
         // const roles = await userrole.data.roles
 
-        console.log("..........req.wishlist..........",req.wishlist)
+        // console.log("..........req.wishlist..........",req.wishlist)
 
        
         const itemresponse = await axios.get("https://mzadey.com/wp-json/yith-proteo-child/v1/getallauction",{
@@ -48,8 +48,10 @@ exports.getAuctions = async(req,res) =>{
                         if(user){
                             let t = {
                                 ...b[i],
-                                name: user.fullname
+                                name: user.fullname,
+                               
                             }
+                           
                             bids.push(t)
                         }
                     }
