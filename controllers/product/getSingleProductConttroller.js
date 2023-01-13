@@ -81,12 +81,12 @@ exports.getSingleProduct = async(req,res) =>{
         }
         
      
-        // let data={
-        //     "pending":status[0].pending,
-        //     "auctions":final
-        // }
+        let data={
+            "pending":status[0].pending,
+            "auctions":final
+        }
 
-        res.status(200).send(final)
+        res.status(200).send(data)
 
     }catch(error){
         console.log("error...",error.message)
