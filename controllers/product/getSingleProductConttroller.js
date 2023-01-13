@@ -5,8 +5,6 @@ const i18next = require("../../utils/i18")
 exports.getSingleProduct = async(req,res) =>{
     try{
 
-       
-
         const encodedToken = Buffer.from(`${process.env.WP_ADMIN_USERNAME}:${process.env.WP_ADMIN_PASSWORD}`).toString('base64');
 
         const itemresponse = await axios.get(`https://mzadey.com/wp-json/yith-proteo-child/v1/getsingleproduct?include=${req.params.id}`,{
@@ -17,11 +15,11 @@ exports.getSingleProduct = async(req,res) =>{
         let item = await itemresponse.data
         item = item.data.product_detail[0] 
         // console.log(item);
-        let status = []
+        let st;
         if(req.member.status==="pending"){
-            status.push({"pending":true});
+            st=true;
         }else{
-            status.push({"pending":false});
+            st=false;
         }
        
         let final = {}
@@ -82,10 +80,10 @@ exports.getSingleProduct = async(req,res) =>{
         
      
         let data={
-            "pending":status[0].pending,
+            "pending":st,
             "auctions":final
         }
-
+       
         res.status(200).send(data)
 
     }catch(error){
