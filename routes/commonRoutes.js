@@ -20,6 +20,9 @@ const { getCategorylist } = require("../controllers/categoryController");
 const { placeBid, getMyBid } = require("../controllers/bidController");
 const { changePassword, forgotPassword } = require("../controllers/passwordController");
 const { getCartDetail } = require("../controllers/cart/getCartController");
+const { getAuctionsFilter } = require("../controllers/product/getAuctionsFilterController");
+const { getMyBidFilter } = require("../controllers/bidFilterController");
+const { getWishlistFilter } = require("../controllers/wishlist/getWishlistFilterController");
 
 const commonRouter = Router()
 
@@ -36,10 +39,12 @@ commonRouter.get("/setrole", auth, checkRole)
 commonRouter.post("/createad", upload.array('photos'), createAd)
 
 commonRouter.post("/getallauctions",auth, getAuctions)
+commonRouter.post("/getallauctions/:id",auth, getAuctionsFilter)
 commonRouter.post("/getallproducts", auth, getProducts)
 commonRouter.get("/getitem/:id",auth, getSingleProduct)
 
 commonRouter.get("/getwishlist", auth, getWishlist)
+commonRouter.get("/getwishlist/:id", auth, getWishlistFilter)
 commonRouter.post("/addtowishlist", auth, addToWishlist)
 commonRouter.get("/removefromwishlist/:id", auth, removeFromWishlist)
 
@@ -49,6 +54,8 @@ commonRouter.get("/removefromwatchlist/:id", auth, removeFromWatchlist)
 
 commonRouter.post("/placebid", auth, placeBid)
 commonRouter.get("/getmybids", auth, getMyBid)
+commonRouter.get("/getmybids/:id", auth, getMyBidFilter)
+
 
 commonRouter.get("/getcartdetail", auth, getCartDetail) //It is live but below 2 APIs needed for testing
 commonRouter.get("/addtocart", auth) //PENDING
