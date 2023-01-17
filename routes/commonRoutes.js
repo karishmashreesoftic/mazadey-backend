@@ -23,6 +23,7 @@ const { getCartDetail } = require("../controllers/cart/getCartController");
 const { getAuctionsFilter } = require("../controllers/product/getAuctionsFilterController");
 const { getMyBidFilter } = require("../controllers/bidFilterController");
 const { getWishlistFilter } = require("../controllers/wishlist/getWishlistFilterController");
+const { getProductsFilter } = require("../controllers/product/getProductsFilterController");
 
 const commonRouter = Router()
 
@@ -41,6 +42,7 @@ commonRouter.post("/createad", upload.array('photos'), createAd)
 commonRouter.post("/getallauctions",auth, getAuctions)
 commonRouter.post("/getallauctions/:id",auth, getAuctionsFilter)
 commonRouter.post("/getallproducts", auth, getProducts)
+commonRouter.post("/getallproducts/:id", auth, getProductsFilter)
 commonRouter.get("/getitem/:id",auth, getSingleProduct)
 
 commonRouter.get("/getwishlist", auth, getWishlist)

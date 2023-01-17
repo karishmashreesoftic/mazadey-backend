@@ -80,9 +80,9 @@ exports.getWishlistFilter = async(req,res) =>{
     
         }
         const category=req.params.id
-        // wishlist[0].category_list
-        console.log(category);
-        finalItems[0].category_list
+       
+        // console.log(category);
+        
         let a=[]
         for(let i=0;i<finalItems.length;i++)
         {
@@ -95,7 +95,7 @@ exports.getWishlistFilter = async(req,res) =>{
                 }
                else if(category==="Accessories"){
                     if(finalItems[i].category_list[j]==="Accessories"){
-                        a.push(bids[i]);
+                        a.push(finalItems[i]);
                     }
                 }
                else if(category==="Bags"){
