@@ -14,7 +14,7 @@ exports.getSingleProduct = async(req,res) =>{
         })
         let item = await itemresponse.data
         item = item.data.product_detail[0] 
-        // console.log(item);
+        //  console.log(item);
         let st;
         if(req.member.status==="pending"){
             st=true;
@@ -49,7 +49,8 @@ exports.getSingleProduct = async(req,res) =>{
                 }
             }
             let flag = false
-            if(req.wishlist.includes(item.ID)){
+            let tmp=req.wishlist[0];
+            if(tmp==item.ID){
                 flag = true
             }
             final = {
@@ -83,7 +84,7 @@ exports.getSingleProduct = async(req,res) =>{
             "pending":st,
             "auctions":final
         }
-       
+      
         res.status(200).send(data)
 
     }catch(error){
