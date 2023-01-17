@@ -69,7 +69,8 @@ exports.getSingleProduct = async(req,res) =>{
                 }
             }
             let flag = false
-            if(req.wishlist.includes(item.ID)){
+            let tmp=req.wishlist[0];
+            if(tmp==item.ID){
                 flag = true
             }
             final = {
