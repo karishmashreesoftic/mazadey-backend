@@ -82,11 +82,57 @@ exports.getWishlistFilter = async(req,res) =>{
         const category=req.params.id
         // wishlist[0].category_list
         console.log(category);
-
+        finalItems[0].category_list
+        let a=[]
+        for(let i=0;i<finalItems.length;i++)
+        {
+            for(let j=0;j<finalItems[i].category_list.length;j++)
+            {
+                if(category==="carPlateNumbers"){
+                    if(finalItems[i].category_list[j]==="Car plate numbers"){
+                        a.push(finalItems[i]);
+                    }
+                }
+               else if(category==="Accessories"){
+                    if(finalItems[i].category_list[j]==="Accessories"){
+                        a.push(bids[i]);
+                    }
+                }
+               else if(category==="Bags"){
+                    if(finalItems[i].category_list[j]==="Bags"){
+                        a.push(finalItems[i]);
+                    }
+                }
+               else if(category==="Jewellery"){
+                    if(finalItems[i].category_list[j]==="Jewellery"){
+                        a.push(finalItems[i]);
+                    }
+                }
+               else if(category==="luxury"){
+                    if(finalItems[i].category_list[j]==="Luxury &amp; Lifestyle"){
+                        a.push(finalItems[i]);
+                    }
+                }
+               else if(category==="phoneNumbers"){
+                    if(finalItems[i].category_list[j]==="Phone numbers"){
+                        a.push(finalItems[i]);
+                    }
+                }
+               else if(category==="realEstates"){
+                    if(finalItems[i].category_list[j]==="Real estates"){
+                        a.push(finalItems[i]);
+                    }
+                }
+               else if(category==="Watches"){
+                    if(finalItems[i].category_list[j]==="Watches"){
+                        a.push(finalItems[i]);
+                    }
+                }
+            }
+        }
         
-        
 
-        res.status(200).send({wishlist: finalItems})
+        res.status(200).send({wishlist:a})
 
     }catch(error){
         res.send({message: error.message})
