@@ -85,11 +85,22 @@ exports.getSingleProduct = async(req,res) =>{
                 wishlist: flag
             }
         }
+
+  
+
+        let tmp1 = Date.parse(final.auction_from)
+        let tmp2=Date.parse(final.auction_to)
+        let tmp=Date.now()
+        let isEnded=true;
+        if(tmp>=tmp1 && tmp<=tmp2){
+           isEnded=false;
+        }
         
      
         let data={
-            "pending":st,
-            "auctions":final
+            isEnded:isEnded,
+            pending:st,
+            auctions:final
         }
        
       
