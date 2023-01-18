@@ -12,8 +12,10 @@ exports.placeBid = async(req,res) =>{
         })
       
        const itemdata=await itemresponse.data
+     
         let product=itemdata.data.product_detail
-       
+        
+      
         let tmp1 = Date.parse(product[0].auction_from)
         let tmp2=Date.parse(product[0].auction_to)
         
@@ -138,6 +140,25 @@ exports.getMyBid = async(req,res) =>{
 
             bids.push(t)
         }
+
+
+        for (let i = 0; i < bids.length; i++) {
+
+            let tmp1 = Date.parse(bids[i].auction.auction_from)
+            let tmp2=Date.parse(bids[i].auction.auction_to)
+            let tmp=Date.now()
+            let isEnded=true;
+            if(tmp>=tmp1 && tmp<=tmp2){
+               isEnded=false;
+            }
+            bids[i]={
+                ...bids[i],
+                isEnded:isEnded
+            }
+
+            
+        }
+        
 
         res.status(200).send({bids})
 

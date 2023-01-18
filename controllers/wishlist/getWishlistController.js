@@ -79,7 +79,26 @@ exports.getWishlist = async(req,res) =>{
         if(req.member.status==="pending"){
           s=true;
         }
-        console.log(req.member._id);
+
+       
+
+        for(let i=0;i<finalItems.length;i++){
+            
+            let tmp1 = Date.parse(finalItems[i].auction_from)
+            let tmp2=Date.parse(finalItems[i].auction_to)
+            let tmp=Date.now()
+            let isEnded=true;
+            if(tmp>=tmp1 && tmp<=tmp2){
+               isEnded=false;
+            }
+            finalItems[i]={
+                ...finalItems[i],
+                isEnded:isEnded
+            }
+
+        }
+
+
         res.status(200).send({pending:s,wishlist: finalItems})
 
     }catch(error){
