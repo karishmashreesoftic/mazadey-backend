@@ -91,6 +91,7 @@ exports.getSingleProduct = async(req,res) =>{
             "pending":st,
             "auctions":final
         }
+       
       
         res.status(200).send(data)
 

@@ -1,17 +1,45 @@
 const axios = require("axios")
 const Member = require("../models/Member")
+const i18next = require("../utils/i18")
 
 exports.placeBid = async(req,res) =>{
     try{
 
-        const response = await axios.get(`https://mzadey.com/wp-json/yith-proteo-child/v1/placebid?user_id=${req.member._id}&auction_id=${req.body.auction}&bid_price=${req.body.amount}`, { 
+        const itemresponse = await axios.get(`https://mzadey.com/wp-json/yith-proteo-child/v1/getsingleproduct?include=${req.body.auction}`,{
             headers: {
                 "Accept-Encoding": "gzip,deflate,compress"
             }
         })
-        const data = await response.data
+      
+       const itemdata=await itemresponse.data
+        let product=itemdata.data.product_detail
+       
+        let tmp1 = Date.parse(product[0].auction_from)
+        let tmp2=Date.parse(product[0].auction_to)
+        
+        let tmp=Date.now()
+        
+        if(tmp>=tmp1 && tmp<=tmp2)
+        {
+            const response = await axios.get(`https://mzadey.com/wp-json/yith-proteo-child/v1/placebid?user_id=${req.member._id}&auction_id=${req.body.auction}&bid_price=${req.body.amount}`, { 
+                headers: {
+                    "Accept-Encoding": "gzip,deflate,compress"
+                }
+            })
+            const data = await response.data
+            
+            res.status(200).send({message: data})
 
-        res.status(200).send({message: data})
+
+
+        }else{
+           
+            throw new Error(i18next.t("Auction Has Ended", {lng: req.member.applanguage}))
+
+        }
+
+
+       
 
     }catch(error){
         res.send({message: error.message})
