@@ -94,8 +94,12 @@ exports.getMyBid = async(req,res) =>{
                     }
                 }
                 let flag = false
-                if(req.wishlist.includes(item.ID)){
-                    flag = true
+                let tmp=req.wishlist;
+                for(let i=0;i<tmp.length;i++){
+                    if(tmp[i]==item.ID){
+                        
+                        flag = true
+                    }
                 }
                 final = {
                     ...item,
@@ -112,8 +116,12 @@ exports.getMyBid = async(req,res) =>{
                     }
                 }
                 let flag = false
-                if(req.wishlist.includes(item.ID)){
-                    flag = true
+                let tmp=req.wishlist;
+                for(let i=0;i<tmp.length;i++){
+                    if(tmp[i]==item.ID){
+                        
+                        flag = true
+                    }
                 }
                 final = {
                     ...item,
