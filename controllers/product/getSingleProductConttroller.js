@@ -49,10 +49,14 @@ exports.getSingleProduct = async(req,res) =>{
                 }
             }
             let flag = false
-            let tmp=req.wishlist[0];
-            if(tmp==item.ID){
-                flag = true
+            let tmp=req.wishlist;
+            for(let i=0;i<tmp.length;i++){
+                if(tmp[i]==item.ID){
+                    
+                    flag = true
+                }
             }
+           
             final = {
                 ...item,
                 category_list: c,
@@ -69,9 +73,11 @@ exports.getSingleProduct = async(req,res) =>{
                 }
             }
             let flag = false
-            let tmp=req.wishlist[0];
-            if(tmp==item.ID){
-                flag = true
+            let tmp=req.wishlist;
+            for(let i=0;i<tmp.length;i++){
+                if(tmp[i]==item.ID){
+                    flag = true
+                }
             }
             final = {
                 ...item,
