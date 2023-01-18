@@ -27,12 +27,10 @@ exports.getAuctions = async(req,res) =>{
         let items = await itemresponse.data
         items = items.data.product_list[0]
         // console.log("item..",items)
-
-        let auctions = []
+        let auctions=[]
+        let s = false;
         if(req.member.status==="pending"){
-            auctions.push({"pending":true});
-        }else{
-            auctions.push({"pending":false});
+           s=true;
         }
 
         if(req.body.category){
@@ -116,14 +114,28 @@ exports.getAuctions = async(req,res) =>{
                 auctions.push(t)
             }
         }
-        let a=[]
-        for(let i=1;i<auctions.length;i++){
-            a.push(auctions[i]);
+       
+        for(let i=0;i<auctions.length;i++)
+        {
+             let tmp1 = Date.parse(auctions[i].auction_from)
+             let tmp2=Date.parse(auctions[i].auction_to)
+             let tmp=Date.now()
+             let isEnded=true;
+             if(tmp>=tmp1 && tmp<=tmp2){
+                isEnded=false;
+             }
+             auctions[i]={
+                ...auctions[i],
+                isEnded:isEnded
+             }
+
         }
+       
+
      
         let data={
-            "pending":auctions[0].pending,
-            "auctions":a
+            "pending":s,
+            "auctions":auctions
         }
 
         res.status(201).send(data)
