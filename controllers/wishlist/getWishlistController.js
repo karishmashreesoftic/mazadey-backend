@@ -5,10 +5,6 @@ const i18next = require("../../utils/i18")
 exports.getWishlist = async(req,res) =>{
     try{
 
-        if(req.member.status==="pending"){
-            throw new Error(i18next.t("pendingForActivation", {lng: req.member.applanguage}))
-        }
-
         const encodedToken = Buffer.from(`${process.env.WP_ADMIN_USERNAME}:${process.env.WP_ADMIN_PASSWORD}`).toString('base64');
 
         const itemresponse = await axios.get(`https://mzadey.com/wp-json/yith-proteo-child/v1/getallwishlist?user_id=${req.member._id}`,{
@@ -79,10 +75,15 @@ exports.getWishlist = async(req,res) =>{
                 }
     
         }
-
-        res.status(200).send({wishlist: finalItems})
+        let s=false;
+        if(req.member.status==="pending"){
+          s=true;
+        }
+        console.log(req.member._id);
+        res.status(200).send({pending:s,wishlist: finalItems})
 
     }catch(error){
+       
         res.send({message: error.message})
     }   
 }
