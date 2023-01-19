@@ -24,6 +24,7 @@ const { getAuctionsFilter } = require("../controllers/product/getAuctionsFilterC
 const { getMyBidFilter } = require("../controllers/bidFilterController");
 const { getWishlistFilter } = require("../controllers/wishlist/getWishlistFilterController");
 const { getProductsFilter } = require("../controllers/product/getProductsFilterController");
+const { getProfile } = require("../controllers/getProfileController");
 
 const commonRouter = Router()
 
@@ -34,6 +35,8 @@ commonRouter.get("/", (req, res) => { res.send('Mzadey Backend') })
 commonRouter.post("/sendotp", sendOTP)
 commonRouter.post("/signup", upload.single("qid"), signup)
 commonRouter.post("/login", login)
+commonRouter.post("/getprofile/:id", getProfile)
+
 
 commonRouter.get("/categorylist", auth, getCategorylist)
 commonRouter.get("/setrole", auth, checkRole)

@@ -11,8 +11,10 @@ exports.getCartDetail = async(req,res) =>{
         let cart = await response.data
         cart = cart.data.response
 
-        // console.log("cart...",cart)
-
+        console.log("cart...",cart)
+        if(!cart){
+            throw new Error("No items present in your cart !!")
+        }
         let finalCart = []
         let total = 0
 
@@ -32,9 +34,7 @@ exports.getCartDetail = async(req,res) =>{
             total += item.line_total
         }
 
-        if(!cart){
-            throw new Error("No items present in your cart !!")
-        }
+      
 
         res.status(200).send({cart: finalCart, total})
 
