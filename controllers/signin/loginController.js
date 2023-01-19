@@ -21,7 +21,7 @@ exports.login = async(req,res) =>{
         const member = await Member.findByPk(data.user.data.ID)
         const token = jwt.sign({_id: member._id}, process.env.JWT_SECRET)
         const newToken = await Token.create({token: token, member: member._id})
-
+        // console.log(data.user.data.ID);
         res.status(201).send({member, token: newToken.token, message: "Login Successful"})
     }catch(error){
         let msg = error.message;
