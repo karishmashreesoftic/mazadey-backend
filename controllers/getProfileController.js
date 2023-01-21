@@ -5,8 +5,12 @@ const axios = require("axios");
 
 exports.getProfile = async(req,res) =>{
     try{
-        const member = await Member.findByPk(req.params.id)
+
+        const token = req.header('Authorization')
+      
+        const tt = await Token.findOne({ where: { token: token } })
        
+        const member=await Member.findByPk(tt.member)
         // console.log(data.user.data.ID);
         // console.log(req.params.id);
         if(!member){
