@@ -49,9 +49,10 @@ exports.placeBid = async(req,res) =>{
 }
 
 exports.getMyBid = async(req,res) =>{
+    
     try{
-        
-        const response = await axios.get(`https://mzadey.com/wp-json/yith-proteo-child/v1/getmybidlist?user_id=${req.member._id}`,{
+
+        let response = await axios.get(`https://mzadey.com/wp-json/yith-proteo-child/v1/getmybidlist?user_id=${req.member._id}`,{
             headers: {
                 "Accept-Encoding": "gzip,deflate,compress"
             }
@@ -59,12 +60,45 @@ exports.getMyBid = async(req,res) =>{
         
         let tempbids = await response.data
         tempbids = tempbids.data.response
-
+        
         let bids = []
 
+        const itemresponsee = await axios.get("https://mzadey.com/wp-json/yith-proteo-child/v1/getallauction",{
+            headers: {
+                "Accept-Encoding": "gzip,deflate,compress"
+            }
+        })
+
+        let auctionid=[]
+
+        let items = await itemresponsee.data
+        items = items.data.product_list[0]
+       
+        let flag=false;
+        for (let i = 0; i < items.length; i++) {
+           auctionid.push(items[i].ID);
+            
+        }
+      
         for(let i=0; i< tempbids.length; i++){
 
-            const itemresponse = await axios.get(`https://mzadey.com/wp-json/yith-proteo-child/v1/getsingleproduct?include=${tempbids[i].auction_id}`,{
+
+            let id=tempbids[i].auction_id;
+            let flag=false;
+            for (let i = 0; i < auctionid.length; i++) {
+                const element = auctionid[i];
+                if(element==id){
+                    flag=true;
+                    break;
+                }
+            }
+           
+           
+            if(flag){
+
+            
+
+            const itemresponse = await axios.get(`https://mzadey.com/wp-json/yith-proteo-child/v1/getsingleproduct?include=${id}`,{
                 headers: {
                     "Accept-Encoding": "gzip,deflate,compress"
                 }
@@ -72,9 +106,10 @@ exports.getMyBid = async(req,res) =>{
         
             let item = await itemresponse.data
             item = item.data.product_detail[0] 
+            
             let final = {}
 
-            if(item.auction_starting_price){
+            if(item.auction_starting_price!==0){
                 let c = []
                 let bids = []
                 const b = item.bidding_list
@@ -98,18 +133,23 @@ exports.getMyBid = async(req,res) =>{
                 }
                 let flag = false
                 let tmp=req.wishlist;
+                // console.log("....................done....................1");
                 for(let i=0;i<tmp.length;i++){
                     if(tmp[i]==item.ID){
                         
                         flag = true
                     }
                 }
+                // console.log("....................done....................2");
+
                 final = {
                     ...item,
                     category_list: c,
                     bidding_list: bids,
                     wishlist: flag
                 }
+                // console.log("....................done....................3");
+
             }else{
                 let c = []
                 for(let j=0; j<item.category_list.length; j++){
@@ -118,6 +158,8 @@ exports.getMyBid = async(req,res) =>{
                         c.push(tc.name)
                     }
                 }
+                // console.log("....................done....................4");
+
                 let flag = false
                 let tmp=req.wishlist;
                 for(let i=0;i<tmp.length;i++){
@@ -126,11 +168,15 @@ exports.getMyBid = async(req,res) =>{
                         flag = true
                     }
                 }
+                // console.log("....................done....................5");
+
                 final = {
                     ...item,
                     category_list: c,
                     wishlist: flag
                 }
+                // console.log("....................done....................6");
+
             }
             
             let t = {
@@ -138,11 +184,14 @@ exports.getMyBid = async(req,res) =>{
                 auction: final,
                 name: req.member.fullname
             }
+            // console.log("....................done....................7");
+
 
             bids.push(t)
-        }
+            }
+    }
 
-
+        // console.log("....................done....................8");
         for (let i = 0; i < bids.length; i++) {
 
             let tmp1 = Date.parse(bids[i].auction.auction_from)
@@ -159,13 +208,15 @@ exports.getMyBid = async(req,res) =>{
 
             
         }
+      
+
         // console.log("..................bids...................");
         // console.log(bids);
 
         res.status(200).send({bids})
 
     }catch(error){
-        res.send({message: error.message})
+        res.send({message: error.response.data})
     }   
 }
 

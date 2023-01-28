@@ -13,6 +13,7 @@ exports.auth = async (req, res, next) => {
         if(!member){
             throw new Error()
         }
+       
 
         let routes = [
             "getallauctions",

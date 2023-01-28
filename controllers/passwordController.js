@@ -12,10 +12,10 @@ exports.changePassword = async(req,res) =>{
             }
         })
 
-        const result = await Member.update(
-            { password:req.body.newpassword},
-            { where: { email: req.member.email } }
-          )
+        // const result = await Member.update(
+        //     { password:req.body.newpassword},
+        //     { where: { email: req.member.email } }
+        //   )
 
         
         const data = await response.data
@@ -36,7 +36,7 @@ exports.forgotPassword = async(req,res) =>{
             }
         })
         const data = await response.data
-
+        console.log(data);
         res.status(200).send({message: data.data.response[0].message})
 
     }catch(error){
