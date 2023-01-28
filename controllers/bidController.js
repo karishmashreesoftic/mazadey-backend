@@ -50,12 +50,13 @@ exports.placeBid = async(req,res) =>{
 
 exports.getMyBid = async(req,res) =>{
     try{
-
+        
         const response = await axios.get(`https://mzadey.com/wp-json/yith-proteo-child/v1/getmybidlist?user_id=${req.member._id}`,{
             headers: {
                 "Accept-Encoding": "gzip,deflate,compress"
             }
         })
+        
         let tempbids = await response.data
         tempbids = tempbids.data.response
 
@@ -158,7 +159,8 @@ exports.getMyBid = async(req,res) =>{
 
             
         }
-        
+        // console.log("..................bids...................");
+        // console.log(bids);
 
         res.status(200).send({bids})
 
@@ -166,4 +168,5 @@ exports.getMyBid = async(req,res) =>{
         res.send({message: error.message})
     }   
 }
+
 

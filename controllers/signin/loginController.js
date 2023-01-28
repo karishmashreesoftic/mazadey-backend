@@ -16,7 +16,7 @@ exports.login = async(req,res) =>{
             }
         })
         const data = await response.data
-        // console.log("data..",data)
+        console.log("data..",data)
 
         const member = await Member.findByPk(data.user.data.ID)
         

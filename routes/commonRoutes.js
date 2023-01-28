@@ -64,7 +64,7 @@ commonRouter.post("/addtowatchlist", auth, addToWatchlist)
 commonRouter.get("/removefromwatchlist/:id", auth, removeFromWatchlist)
 
 commonRouter.post("/placebid", auth, placeBid)
-commonRouter.get("/getmybids", auth, getMyBid)
+commonRouter.get("/getmybids", auth,getMyBid)
 commonRouter.get("/getmybids/:id", auth, getMyBidFilter)
 
 

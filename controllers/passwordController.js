@@ -1,4 +1,5 @@
 const axios = require("axios")
+const Member = require("../models/Member")
 
 exports.changePassword = async(req,res) =>{
     try{
@@ -10,6 +11,13 @@ exports.changePassword = async(req,res) =>{
                 "Accept-Encoding": "gzip,deflate,compress"
             }
         })
+
+        const result = await Member.update(
+            { password:req.body.newpassword},
+            { where: { email: req.member.email } }
+          )
+
+        
         const data = await response.data
 
         res.status(200).send({message: data.data.response[0].message})

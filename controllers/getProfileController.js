@@ -11,8 +11,7 @@ exports.getProfile = async(req,res) =>{
         const tt = await Token.findOne({ where: { token: token } })
        
         const member=await Member.findByPk(tt.member)
-        // console.log(data.user.data.ID);
-        // console.log(req.params.id);
+        
         if(!member){
             throw new Error("ID is not matching with any user.")
         }
