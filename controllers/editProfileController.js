@@ -6,14 +6,25 @@ const axios = require("axios");
 exports.editProfile = async(req,res) =>{
     try{
         
-        // const result = await Member.update(
-        //     { firstname:'abc'  ,lastname:'def',password:'xyz',mobile:'',password:''},
+        const id=req.member._id;
+        const {mobile}=req.body
+
+        const itemresponse = await axios.get(`https://mzadey.com/wp-json/yith-proteo-child/v1/edituserprofile?user_id=${id}&&phone_number=${mobile}`,{
+            headers: {
+                "Accept-Encoding": "gzip,deflate,compress"
+            }
+        })
+
+        const data=await itemresponse.data;
+
+        const result = await Member.update(
+            { mobile:mobile},
+            { where: { _id: id } }
+          )
 
 
-        //     { where: { _id: req.params.id } }
-        //   )
-        //   console.log(result);
-        //   res.status(201).send({result})
+        res.status(201).send(data)
+       
 
     }catch(error){
         let msg = error.message;

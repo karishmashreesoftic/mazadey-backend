@@ -12,10 +12,10 @@ exports.changePassword = async(req,res) =>{
             }
         })
 
-        // const result = await Member.update(
-        //     { password:req.body.newpassword},
-        //     { where: { email: req.member.email } }
-        //   )
+        const result = await Member.update(
+            { password:req.body.newpassword},
+            { where: { email: req.member.email } }
+          )
 
         
         const data = await response.data

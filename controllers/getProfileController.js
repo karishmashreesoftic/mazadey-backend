@@ -6,16 +6,19 @@ const axios = require("axios");
 exports.getProfile = async(req,res) =>{
     try{
 
-        const token = req.header('Authorization')
-      
-        const tt = await Token.findOne({ where: { token: token } })
+        const id = req.member._id
+        const itemresponse = await axios.get(`https://mzadey.com/wp-json/yith-proteo-child/v1/getuserprofile?user_id=${id}`,{
+            headers: {
+                "Accept-Encoding": "gzip,deflate,compress"
+            }
+        })
+
+        const data=await itemresponse.data;
+
+
+        res.status(201).send(data)
+
        
-        const member=await Member.findByPk(tt.member)
-        
-        if(!member){
-            throw new Error("ID is not matching with any user.")
-        }
-        res.status(201).send({member})
     }catch(error){
         let msg = error.message;
         
