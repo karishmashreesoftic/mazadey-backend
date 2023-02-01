@@ -40,9 +40,7 @@ commonRouter.post("/login", login)
 commonRouter.get("/getprofile",auth, getProfile)
 commonRouter.post("/editprofile",auth, editProfile)
 
- //for edit profile logic we to have delete previous version of user from db and add new updated data in db
-
-
+ 
 
 commonRouter.get("/categorylist", auth, getCategorylist)
 commonRouter.get("/setrole", auth, checkRole)

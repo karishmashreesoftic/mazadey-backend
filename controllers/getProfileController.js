@@ -13,10 +13,30 @@ exports.getProfile = async(req,res) =>{
             }
         })
 
-        const data=await itemresponse.data;
+        const data=await itemresponse.data.data.response[0];
+
+        let result={
+            email:data.user_email,
+            name:data.display_name,
+            id:data.id,
+            phone:data.phone
+        }
+        // console.log(data.phone);
+        if(data.user_status[0]=="registered_user" || data.user_status[0]=="moderator" ||
+        data.user_status[0]=="vendor"  ){
+            result={
+                ...result,
+                user_status:1
+            }
+        }else{
+            result={
+                ...result,
+                user_status:0
+            }
+        }
 
 
-        res.status(201).send(data)
+        res.status(201).send(result)
 
        
     }catch(error){
