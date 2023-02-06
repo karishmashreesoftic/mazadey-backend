@@ -216,7 +216,7 @@ exports.getMyBid = async(req,res) =>{
         res.status(200).send({bids})
 
     }catch(error){
-        res.send({message: error.response.data})
+        res.send({message: error.response})
     }   
 }
 

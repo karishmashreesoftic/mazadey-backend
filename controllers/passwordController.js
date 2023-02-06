@@ -35,6 +35,7 @@ exports.forgotPassword = async(req,res) =>{
                 "Accept-Encoding": "gzip,deflate,compress"
             }
         })
+        
         const data = await response.data
         console.log(data);
         res.status(200).send({message: data.data.response[0].message})

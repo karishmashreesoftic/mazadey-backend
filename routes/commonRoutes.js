@@ -27,6 +27,7 @@ const { getProductsFilter } = require("../controllers/product/getProductsFilterC
 const { getProfile } = require("../controllers/getProfileController");
 
 const { editProfile } = require("../controllers/editProfileController");
+const { contactus } = require("../controllers/contactusController");
 
 const commonRouter = Router()
 
@@ -39,6 +40,7 @@ commonRouter.post("/signup", upload.single("qid"), signup)
 commonRouter.post("/login", login)
 commonRouter.get("/getprofile",auth, getProfile)
 commonRouter.post("/editprofile",auth, editProfile)
+commonRouter.post("/contactus",auth, contactus)
 
  
 
